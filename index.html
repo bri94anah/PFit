@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PF Lift & Swim Tracker</title>
+    <title>PF Lift, Swim & Cardio Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -190,6 +190,8 @@
                 category: "Lifting",
                 target: "Chest, Shoulders, Triceps",
                 exercises: [
+                    { name: "Briana: Elliptical Warmup", target: "10 Mins (Easy Pace)", sets: 1, isCardio: true },
+                    { name: "Ryan: Seated Elliptical Warmup", target: "10 Mins (Comfortable Pace)", sets: 1, isCardio: true },
                     { name: "Dumbbell Chest Press", target: "3 Sets x 8 - 10 Reps", sets: 3 },
                     { name: "Seated DB Shoulder Press", target: "3 Sets x 10 - 12 Reps", sets: 3 },
                     { name: "Machine Chest Fly (Pec Dec)", target: "3 Sets x 12 Reps", sets: 3 },
@@ -202,6 +204,8 @@
                 category: "Lifting",
                 target: "Back, Rear Delts, Biceps",
                 exercises: [
+                    { name: "Briana: Elliptical Warmup", target: "10 Mins (Easy Pace)", sets: 1, isCardio: true },
+                    { name: "Ryan: Seated Elliptical Warmup", target: "10 Mins (Comfortable Pace)", sets: 1, isCardio: true },
                     { name: "Lat Pulldowns (Wide Grip)", target: "4 Sets x 8 - 10 Reps", sets: 4 },
                     { name: "Seated Cable Rows", target: "3 Sets x 10 Reps", sets: 3 },
                     { name: "Lat Pulldowns (Underhand)", target: "3 Sets x 12 Reps", sets: 3 },
@@ -237,7 +241,9 @@
                     { name: "Hammer Curls (Dumbbell)", target: "3 Sets x 10 - 12 Reps", sets: 3 },
                     { name: "Overhead Tricep Extension (DB)", target: "3 Sets x 12 Reps", sets: 3 },
                     { name: "Seated Ab Crunch Machine", target: "3 Sets x 12 - 15 Reps", sets: 3 },
-                    { name: "Seated Torso Rotation Machine", target: "3 Sets x 12 - 15 Reps", sets: 3 }
+                    { name: "Seated Torso Rotation Machine", target: "3 Sets x 12 - 15 Reps", sets: 3 },
+                    { name: "Briana: Elliptical Finisher", target: "15 Mins (Moderate)", sets: 1, isCardio: true },
+                    { name: "Ryan: Seated Elliptical Finisher", target: "15 Mins (Moderate)", sets: 1, isCardio: true }
                 ]
             },
             Saturday: {
@@ -331,311 +337,5 @@
             document.getElementById('view-workout').classList.add('hidden');
             document.getElementById('view-history').classList.add('hidden');
             document.getElementById('view-guide').classList.add('hidden');
-            document.getElementById(`view-${tabName}`).classList.remove('hidden');
+            document.getElementById(`view-${tabName}`).classList.remove('
 
-            ['workout', 'history', 'guide'].forEach(t => {
-                const navBtn = document.getElementById(`nav-${t}`);
-                navBtn.className = t === tabName 
-                    ? "flex flex-col items-center gap-1 text-purple-400 transition-colors py-1 px-3"
-                    : "flex flex-col items-center gap-1 text-slate-500 transition-colors py-1 px-3";
-            });
-
-            if (tabName === 'history') {
-                populateTrendDropdown();
-                renderTrendChart();
-            }
-        }
-
-        window.selectDay = function(dayName) {
-            currentDay = dayName;
-            updateDaySelectorHighlight();
-            renderSelectedWorkout();
-        }
-
-        function updateDaySelectorHighlight() {
-            const btns = document.querySelectorAll('.day-btn');
-            const dayAbbrs = { Monday: "Mon", Tuesday: "Tue", Wednesday: "Wed", Thursday: "Thu", Friday: "Fri", Saturday: "Sat", Sunday: "Sun" };
-            btns.forEach(btn => {
-                btn.className = btn.innerText === dayAbbrs[currentDay]
-                    ? "day-btn shrink-0 text-xs px-3.5 py-2 rounded-xl font-black transition-all border border-purple-500/30 bg-purple-600/20 text-purple-300"
-                    : "day-btn shrink-0 text-xs px-3.5 py-2 rounded-xl font-bold transition-all border border-slate-800 bg-slate-950 text-slate-400";
-            });
-        }
-
-        function renderSelectedWorkout() {
-            const data = workoutProgram[currentDay];
-            const listContainer = document.getElementById('exercise-list-container');
-            document.getElementById('workout-day-title').innerText = data.title;
-            document.getElementById('workout-category').innerText = data.category + " Day";
-            document.getElementById('workout-target-summary').innerText = data.target;
-
-            document.getElementById('workout-category').className = data.category === 'Swim'
-                ? "text-[9px] font-extrabold uppercase tracking-widest text-sky-400 px-2 py-0.5 bg-sky-500/10 rounded-md"
-                : "text-[9px] font-extrabold uppercase tracking-widest text-purple-400 px-2 py-0.5 bg-purple-500/10 rounded-md";
-
-            listContainer.innerHTML = '';
-            data.exercises.forEach((ex, exIdx) => {
-                let cardHTML = '';
-                if (ex.isSwim) {
-                    cardHTML = `
-                        <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-4 flex flex-col justify-between" id="ex-${exIdx}">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h4 class="font-black text-slate-200 text-sm">${ex.name}</h4>
-                                    <span class="text-[10px] text-sky-400 font-semibold uppercase tracking-wide mt-1 block">${ex.target}</span>
-                                </div>
-                                <span class="text-[9px] font-bold text-slate-500 border border-slate-800 rounded px-1.5 py-0.5 uppercase">Pool</span>
-                            </div>
-                            <div class="mt-4 pt-3 border-t border-slate-900 flex justify-between items-center">
-                                <input type="number" id="swim-input-mins" placeholder="Mins swam" class="w-28 bg-slate-900 border border-slate-800 text-xs py-2 px-3 rounded-lg text-slate-200 focus:border-sky-500 focus:outline-none">
-                                <button onclick="markSwimReady(this)" class="bg-sky-600/20 text-sky-400 border border-sky-500/30 font-bold text-xs py-2 px-4 rounded-xl transition-all hover:bg-sky-600/30">Set Done</button>
-                            </div>
-                        </div>`;
-                } else {
-                    let setButtonsHTML = '';
-                    for (let s = 1; s <= ex.sets; s++) {
-                        setButtonsHTML += `
-                            <button onclick="toggleCardSet(this, ${exIdx}, ${s})" class="set-checker-btn w-10 h-10 rounded-full border border-slate-800 text-xs font-black flex items-center justify-center transition-all bg-slate-900 text-slate-400 hover:border-purple-500/40">${s}</button>`;
-                    }
-                    cardHTML = `
-                        <div class="bg-slate-950 border border-slate-850 rounded-2xl p-4 space-y-3" id="ex-${exIdx}">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h4 class="font-extrabold text-slate-100 text-sm leading-tight">${ex.name}</h4>
-                                    <span class="text-[10px] text-slate-400 font-medium tracking-wide block mt-1">${ex.target}</span>
-                                </div>
-                                <span class="text-[9px] font-extrabold text-slate-500 border border-slate-850 bg-slate-900/60 rounded px-1.5 py-0.5 uppercase">Machine</span>
-                            </div>
-                            <div class="flex gap-2 items-center bg-slate-900/40 p-2 rounded-xl border border-slate-850/50">
-                                <div class="flex-1">
-                                    <label class="text-[9px] uppercase font-bold text-slate-500 block">Weight (lbs)</label>
-                                    <input type="number" id="ex-weight-${exIdx}" placeholder="Weight" class="w-full bg-slate-950 border border-slate-800 text-xs py-1.5 px-2 rounded-md text-slate-200 focus:border-purple-500 focus:outline-none font-bold">
-                                </div>
-                                <div class="flex-1">
-                                    <label class="text-[9px] uppercase font-bold text-slate-500 block">Reps Logged</label>
-                                    <input type="number" id="ex-reps-${exIdx}" placeholder="Reps" class="w-full bg-slate-950 border border-slate-800 text-xs py-1.5 px-2 rounded-md text-slate-200 focus:border-purple-500 focus:outline-none font-bold">
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-2 pt-1.5">
-                                <span class="text-[9px] font-black uppercase text-slate-500 tracking-wider">Sets:</span>
-                                <div class="flex gap-1.5 ml-1">${setButtonsHTML}</div>
-                            </div>
-                        </div>`;
-                }
-                listContainer.insertAdjacentHTML('beforeend', cardHTML);
-            });
-            lucide.createIcons();
-        }
-
-        window.toggleCardSet = function(btn, exIdx, setNum) {
-            btn.classList.toggle('bg-slate-900');
-            btn.classList.toggle('text-slate-400');
-            btn.classList.toggle('border-slate-800');
-            btn.classList.toggle('bg-emerald-600/20');
-            btn.classList.toggle('text-emerald-400');
-            btn.classList.toggle('border-emerald-500/40');
-            btn.classList.add('scale-95');
-            setTimeout(() => btn.classList.remove('scale-95'), 100);
-        }
-
-        window.markSwimReady = function(btn) {
-            const input = document.getElementById('swim-input-mins');
-            if (!input.value) {
-                showToast("Enter minutes swam first", "error");
-                return;
-            }
-            btn.innerText = "Done ✓";
-            btn.className = "bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 font-bold text-xs py-2 px-4 rounded-xl";
-            showToast("Swim log stored!", "success");
-        }
-
-        window.submitWorkoutSession = async function() {
-            const currentWorkout = workoutProgram[currentDay];
-            const submission = {
-                date: new Date().toISOString().split('T')[0],
-                timestamp: Date.now(),
-                day: currentDay,
-                workoutType: currentWorkout.title,
-                category: currentWorkout.category,
-                exercises: []
-            };
-            let validationPassed = false;
-
-            currentWorkout.exercises.forEach((ex, idx) => {
-                if (ex.isSwim) {
-                    const mins = document.getElementById('swim-input-mins').value;
-                    if (mins) {
-                        submission.exercises.push({ name: ex.name, weight: 0, reps: parseInt(mins), completedSets: 1 });
-                        validationPassed = true;
-                    }
-                } else {
-                    const weightVal = document.getElementById(`ex-weight-${idx}`).value;
-                    const repsVal = document.getElementById(`ex-reps-${idx}`).value;
-                    const activeSetElements = document.querySelectorAll(`#ex-${idx} .set-checker-btn`);
-                    let completedSetCount = 0;
-                    activeSetElements.forEach(btn => {
-                        if (btn.classList.contains('bg-emerald-600/20')) completedSetCount++;
-                    });
-
-                    if (weightVal && repsVal && completedSetCount > 0) {
-                        submission.exercises.push({
-                            name: ex.name,
-                            weight: parseFloat(weightVal),
-                            reps: parseInt(repsVal),
-                            completedSets: completedSetCount
-                        });
-                        validationPassed = true;
-                    }
-                }
-            });
-
-            if (!validationPassed) {
-                showToast("Log at least 1 exercise to submit!", "error");
-                return;
-            }
-
-            if (isFirebaseReady) {
-                const { collection, addDoc } = window.firebaseImports;
-                try {
-                    const path = collection(db, 'artifacts', appId, 'users', userId, 'workout_logs');
-                    await addDoc(path, submission);
-                    showToast("Workout Saved to Cloud!", "success");
-                    await fetchCloudHistory();
-                } catch (err) {
-                    console.error(err);
-                    saveBackupLocal(submission);
-                }
-            } else {
-                saveBackupLocal(submission);
-            }
-            clearWorkoutFields();
-        }
-
-        function clearWorkoutFields() {
-            renderSelectedWorkout();
-        }
-
-        function saveBackupLocal(log) {
-            const localHist = JSON.parse(localStorage.getItem('pf_backup_logs') || '[]');
-            localHist.push(log);
-            localStorage.setItem('pf_backup_logs', JSON.stringify(localHist));
-            localWorkoutHistory = localHist;
-            showToast("Saved Locally!", "success");
-            renderHistoryLogs();
-        }
-
-        function loadOfflineHistory() {
-            localWorkoutHistory = JSON.parse(localStorage.getItem('pf_backup_logs') || '[]');
-            renderHistoryLogs();
-        }
-
-        async function fetchCloudHistory() {
-            const { collection, getDocs } = window.firebaseImports;
-            try {
-                const path = collection(db, 'artifacts', appId, 'users', userId, 'workout_logs');
-                const snapshot = await getDocs(path);
-                const list = [];
-                snapshot.forEach(doc => list.push(doc.data()));
-                list.sort((a, b) => b.timestamp - a.timestamp);
-                localWorkoutHistory = list;
-                renderHistoryLogs();
-            } catch (err) {
-                console.error(err);
-                loadOfflineHistory();
-            }
-        }
-
-        function renderHistoryLogs() {
-            const container = document.getElementById('history-logs-container');
-            if (localWorkoutHistory.length === 0) {
-                container.innerHTML = `<div class="p-8 text-center text-xs text-slate-500 border border-dashed border-slate-800 rounded-xl">No logs saved yet.</div>`;
-                return;
-            }
-            container.innerHTML = '';
-            localWorkoutHistory.forEach((log) => {
-                const formattedDate = new Date(log.timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
-                let exercisesListHTML = '';
-                log.exercises.forEach(ex => {
-                    exercisesListHTML += log.category === 'Swim'
-                        ? `<div class="flex justify-between text-xs text-slate-300"><span>${ex.name}</span><span class="font-bold text-sky-400">${ex.reps} Mins</span></div>`
-                        : `<div class="flex justify-between text-xs text-slate-300"><span>${ex.name}</span><span class="font-mono text-slate-400"><strong class="text-white">${ex.weight} lbs</strong> &bull; ${ex.reps} Reps (${ex.completedSets} sets)</span></div>`;
-                });
-
-                const logColor = log.category === 'Swim' ? 'border-sky-500/20 bg-sky-950/10' : 'border-slate-800 bg-slate-950/40';
-                const tagColor = log.category === 'Swim' ? 'text-sky-400 bg-sky-500/10' : 'text-purple-400 bg-purple-500/10';
-
-                const logHTML = `
-                    <div class="p-4 rounded-xl border ${logColor} space-y-2">
-                        <div class="flex justify-between items-center pb-1 border-b border-slate-800">
-                            <div><h4 class="text-xs font-black text-slate-100">${log.day} Session</h4><span class="text-[10px] text-slate-400 font-mono">${formattedDate}</span></div>
-                            <span class="text-[9px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wide ${tagColor}">${log.category}</span>
-                        </div>
-                        <div class="space-y-2 pt-1">${exercisesListHTML}</div>
-                    </div>`;
-                container.insertAdjacentHTML('beforeend', logHTML);
-            });
-        }
-
-        function populateTrendDropdown() {
-            const select = document.getElementById('exercise-trend-select');
-            const uniqueExercises = new Set();
-            Object.keys(workoutProgram).forEach(day => {
-                workoutProgram[day].exercises.forEach(ex => { if (!ex.isSwim) uniqueExercises.add(ex.name); });
-            });
-            select.innerHTML = '';
-            uniqueExercises.forEach(exName => {
-                const opt = document.createElement('option');
-                opt.value = exName; opt.innerText = exName; select.appendChild(opt);
-            });
-        }
-
-        window.renderTrendChart = function() {
-            const exName = document.getElementById('exercise-trend-select').value;
-            const trendData = [];
-            localWorkoutHistory.forEach(log => {
-                log.exercises.forEach(ex => { if (ex.name === exName && ex.weight > 0) trendData.push({ timestamp: log.timestamp, weight: ex.weight }); });
-            });
-
-            const noDataBanner = document.getElementById('chart-no-data');
-            const svg = document.getElementById('trend-svg');
-
-            if (trendData.length < 2) {
-                noDataBanner.classList.remove('hidden'); svg.innerHTML = ''; return;
-            }
-            noDataBanner.classList.add('hidden');
-            trendData.sort((a,b) => a.timestamp - b.timestamp);
-
-            const weights = trendData.map(d => d.weight);
-            const maxWeight = Math.max(...weights);
-            const minWeight = Math.min(...weights);
-            const range = maxWeight - minWeight === 0 ? 10 : (maxWeight - minWeight);
-
-            const points = trendData.map((d, i) => {
-                const x = (i / (trendData.length - 1)) * 100;
-                const y = 90 - ((d.weight - minWeight) / range) * 80;
-                return `${x},${y}`;
-            });
-
-            document.getElementById('chart-start-date').innerText = new Date(trendData[0].timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
-            document.getElementById('chart-end-date').innerText = new Date(trendData[trendData.length-1].timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
-
-            svg.innerHTML = `
-                <polyline fill="none" stroke="#6d28d9" stroke-width="2.5" points="${points.join(' ')}" />
-                ${points.map((p, i) => {
-                    const coords = p.split(',');
-                    return `<circle cx="${coords[0]}" cy="${coords[1]}" r="2" fill="#fbbf24" /><text x="${coords[0]}" y="${coords[1] - 4}" fill="#e2e8f0" font-size="6" text-anchor="middle">${trendData[i].weight}</text>`;
-                }).join('')}`;
-        }
-
-        function showToast(msg, type = "success") {
-            const box = document.getElementById('toast-box');
-            const messageSpan = document.getElementById('toast-message');
-            const iconSpan = document.getElementById('toast-icon');
-            messageSpan.innerText = msg;
-            iconSpan.innerHTML = type === "success" ? '✓' : '⚠️';
-            box.className = "fixed bottom-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-300 opacity-100 transform translate-y-0";
-            setTimeout(() => { box.className = "fixed bottom-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-300 opacity-0 transform translate-y-2"; }, 3000);
-        }
-    </script>
-</body>
-</html>
