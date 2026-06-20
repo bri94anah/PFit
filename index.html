@@ -272,7 +272,6 @@
         let isFirebaseReady = false;
         let localWorkoutHistory = [];
 
-        // Direct object assignment ensures connection validation
         const __firebase_config = {
             apiKey: "AIzaSyBcf-6zE7Ly10ZKh1wRAZUtowuc24W8nQU",
             authDomain: "pfit-d3269.firebaseapp.com",
@@ -294,12 +293,6 @@
             const statusText = document.getElementById('app-status');
             const syncDot = document.getElementById('sync-indicator');
             try {
-                if (!__firebase_config || !__firebase_config.apiKey) {
-                    statusText.innerText = "Offline Mode (Local)";
-                    syncDot.className = "w-2.5 h-2.5 rounded-full bg-blue-500 animate-none";
-                    loadOfflineHistory();
-                    return;
-                }
                 const { initializeApp, getAuth, signInAnonymously, onAuthStateChanged, getFirestore } = window.firebaseImports;
                 const app = initializeApp(__firebase_config);
                 auth = getAuth(app);
@@ -318,7 +311,7 @@
                     }
                 });
             } catch (err) {
-                console.error(err);
+                console.error("Connection failed fallback: ", err);
                 statusText.innerText = "Offline Mode (Backup)";
                 syncDot.className = "w-2.5 h-2.5 rounded-full bg-blue-500 animate-none";
                 loadOfflineHistory();
