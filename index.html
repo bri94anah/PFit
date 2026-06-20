@@ -265,13 +265,21 @@
                 ]
             }
         };
-        
+
         let currentDay = "Monday";
         let activeTab = "workout";
-        const __firebase_config = '{"apiKey": "AIzaSyBcf-6zE7Ly10ZKh1wRAZUtowuc24W8nQU", "authDomain": "pfit-d3269.firebaseapp.com", "projectId": "pfit-d3269", "storageBucket": "pfit-d3269.appspot.com", "messagingSenderId": "100984802554", "appId": "1:100984802554:web:2d7206cefe14bb5a9b0d43"}';
         let db, auth, appId, userId;
         let isFirebaseReady = false;
         let localWorkoutHistory = [];
+
+        const __firebase_config = {
+            apiKey: "AIzaSyBcf-6zE7Ly10ZKh1wRAZUtowuc24W8nQU",
+            authDomain: "pfit-d3269.firebaseapp.com",
+            projectId: "pfit-d3269",
+            storageBucket: "pfit-d3269.appspot.com",
+            messagingSenderId: "100984802554",
+            appId: "1:100984802554:web:2d7206cefe14bb5a9b0d43"
+        };
 
         window.addEventListener('DOMContentLoaded', async () => {
             lucide.createIcons();
@@ -285,24 +293,19 @@
             const statusText = document.getElementById('app-status');
             const syncDot = document.getElementById('sync-indicator');
             try {
-                if (typeof __firebase_config === 'undefined') {
+                if (typeof __firebase_config === 'undefined' || !__firebase_config.apiKey) {
                     statusText.innerText = "Offline Mode (Local)";
                     syncDot.className = "w-2.5 h-2.5 rounded-full bg-blue-500 animate-none";
                     loadOfflineHistory();
                     return;
                 }
                 const { initializeApp, getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged, getFirestore } = window.firebaseImports;
-                const firebaseConfig = JSON.parse(__firebase_config);
-                const app = initializeApp(firebaseConfig);
+                const app = initializeApp(__firebase_config);
                 auth = getAuth(app);
                 db = getFirestore(app);
-                appId = typeof __app_id !== 'undefined' ? __app_id : 'pf-workout-tracker-default';
+                appId = 'pf-workout-tracker-default';
 
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
+                await signInAnonymously(auth);
 
                 onAuthStateChanged(auth, async (user) => {
                     if (user) {
@@ -698,4 +701,3 @@
     </script>
 </body>
 </html>
-
