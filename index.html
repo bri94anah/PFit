@@ -20,13 +20,6 @@
     </script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Unified Firebase Modules -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        window.firebaseImports = { initializeApp, getAuth, signInAnonymously, onAuthStateChanged, getFirestore, collection, addDoc, getDocs };
-    </script>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen pb-24 antialiased selection:bg-purple-500/30">
     <div class="max-w-md mx-auto min-h-screen flex flex-col bg-slate-900 shadow-2xl relative border-x border-slate-800">
@@ -195,7 +188,7 @@
 
         <!-- Navigation Tabs -->
         <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-slate-950 border-t border-slate-850 px-6 py-2 flex justify-between items-center z-40">
-            <button onclick="switchTab('workout')" id="nav-workout" class="flex flex-col items-center gap-1 text-purple-500 transition-colors py-1 px-3">
+            <button onclick="switchTab('workout')" id="nav-workout" class="flex flex-col items-center gap-1 text-purple-400 transition-colors py-1 px-3">
                 <i data-lucide="dumbbell" class="w-5 h-5"></i>
                 <span class="text-[10px] font-bold">Lifting Day</span>
             </button>
@@ -210,7 +203,12 @@
         </nav>
     </div>
 
+    <!-- UNIFIED APPLICATION JS MODULE -->
     <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
         const workoutProgram = {
             Monday: {
                 title: "Monday: Push Day",
@@ -300,8 +298,9 @@
         let isFirebaseReady = false;
         let localWorkoutHistory = [];
 
+        // Verified Firebase Credentials Configuration (Using correct B string)
         const __firebase_config = {
-            apiKey: "AIzaSyDcf-6zE7Ly10ZKh1wRAZUtowuc24W8nQU",
+            apiKey: "AIzaSyBcf-6zE7Ly10ZKh1wRAZUtowuc24W8nQU",
             authDomain: "pfit-d3269.firebaseapp.com",
             projectId: "pfit-d3269",
             storageBucket: "pfit-d3269.firebasestorage.app",
@@ -309,13 +308,14 @@
             appId: "1:100984802554:web:2d7206cefe14bb5a9b0d43"
         };
 
+        // Window Handshake Initializer
         window.addEventListener('DOMContentLoaded', async () => {
             lucide.createIcons();
             setCurrentDateBadge();
             detectAndSetCurrentDay();
             renderSelectedWorkout();
             
-            // Output active browser key straight to Diagnostics Panel
+            // Print key directly to Diagnostics Box to confirm browser load state
             const keyLabel = document.getElementById('diagnostics-key');
             if (keyLabel) {
                 keyLabel.innerText = __firebase_config.apiKey;
@@ -330,7 +330,6 @@
             const debugPanel = document.getElementById('diagnostics-msg');
 
             try {
-                const { initializeApp, getAuth, signInAnonymously, onAuthStateChanged, getFirestore } = window.firebaseImports;
                 const app = initializeApp(__firebase_config);
                 auth = getAuth(app);
                 db = getFirestore(app);
@@ -345,7 +344,7 @@
                         statusText.innerText = `Connected (Cloud)`;
                         syncDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-500 animate-none";
                         
-                        // Collapse Diagnostics box once successfully connected
+                        // Hide diagnostics on successful handshake
                         const dBox = document.getElementById('diagnostics-box');
                         if (dBox) dBox.classList.add('hidden');
                         
@@ -353,7 +352,7 @@
                     }
                 });
             } catch (err) {
-                console.error("Cloud Connection Failure:", err);
+                console.error("Handshake fail:", err);
                 statusText.innerText = "Offline Mode (Backup)";
                 syncDot.className = "w-2.5 h-2.5 rounded-full bg-blue-500 animate-none";
                 
@@ -586,7 +585,6 @@
             }
 
             if (isFirebaseReady) {
-                const { collection, addDoc } = window.firebaseImports;
                 try {
                     const path = collection(db, 'artifacts', appId, 'users', userId, 'workout_logs');
                     await addDoc(path, submission);
@@ -621,7 +619,6 @@
         }
 
         async function fetchCloudHistory() {
-            const { collection, getDocs } = window.firebaseImports;
             try {
                 const path = collection(db, 'artifacts', appId, 'users', userId, 'workout_logs');
                 const snapshot = await getDocs(path);
@@ -737,4 +734,8 @@
             messageSpan.innerText = msg;
             iconSpan.innerHTML = type === "success" ? '✓' : '⚠️';
             box.className = "fixed bottom-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-300 opacity-100 transform translate-y-0";
-            setTimeout(() => { box.className = "fixed bottom
+            setTimeout(() => { box.className = "fixed bottom-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-300 opacity-0 transform translate-y-2"; }, 3000);
+        }
+    </script>
+</body>
+</html>
