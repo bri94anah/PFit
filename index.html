@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PF Lift, Swim & Cardio Tracker</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -17,18 +18,12 @@
             }
         }
     </script>
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        window.firebaseImports = { initializeApp, getAuth, signInAnonymously, onAuthStateChanged, getFirestore, collection, addDoc, getDocs };
-    </script>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen pb-24 antialiased selection:bg-purple-500/30">
     <div class="max-w-md mx-auto min-h-screen flex flex-col bg-slate-900 shadow-2xl relative border-x border-slate-800">
-        
-        <!-- Main Application Header -->
+        <!-- Header -->
         <header class="sticky top-0 z-30 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-2">
                 <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-600 to-amber-500 flex items-center justify-center shadow-lg shadow-purple-500/20">
@@ -45,18 +40,10 @@
             </div>
         </header>
 
-        <div id="debug-error-log" class="hidden mx-4 mt-3 p-3 bg-red-950/40 border border-red-900/40 rounded-xl">
-            <div class="flex items-center gap-2 text-red-400 text-xs font-bold">
-                <i data-lucide="alert-octagon" class="w-4 h-4 shrink-0"></i>
-                <span>Cloud Diagnostics Assistant</span>
-            </div>
-            <p id="debug-error-text" class="text-[11px] text-slate-300 mt-1 font-mono break-all leading-relaxed bg-black/30 p-2 rounded border border-red-900/20"></p>
-            <p class="text-[10px] text-slate-500 mt-1.5 italic">This block is displaying the live handshake feedback from the Firebase server.</p>
-        </div>
-
+        <!-- Main Content View Area -->
         <main class="flex-1 p-4 overflow-y-auto">
             <!-- Cloud Diagnostics Assistant -->
-            <div id="diagnostics-box" class="bg-red-950/40 border border-red-500/30 rounded-2xl p-4 mt-2">
+            <div id="diagnostics-box" class="bg-red-950/40 border border-red-500/30 rounded-2xl p-4 mt-2 mb-4">
                 <div class="flex items-start gap-2.5">
                     <span class="text-red-400 mt-0.5">⚠️</span>
                     <div>
@@ -67,13 +54,20 @@
                         <p class="text-[10px] font-mono text-slate-400 mt-2 border-t border-red-500/10 pt-2">
                             Active Key in Browser: <span id="diagnostics-key" class="text-amber-400 font-bold">detecting...</span>
                         </p>
-                        <p class="text-[9px] text-red-400/60 mt-1.5 italic">This block is displaying the live handshake feedback from the Firebase server.</p>
+                        <p class="text-[9px] text-red-400/60 mt-1.5 italic">This block displays live handshake feedback from the Firebase server.</p>
                     </div>
                 </div>
             </div>
 
+            <!-- Toast Notifications Area -->
             <div id="toast-box" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-300 opacity-0 transform translate-y-2">
+                <div class="bg-slate-800 text-white border border-slate-700 px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-2 text-xs font-semibold">
+                    <span id="toast-icon"></span>
+                    <span id="toast-message">Logged!</span>
+                </div>
+            </div>
 
+            <!-- TAB 1: TODAY'S WORKOUT VIEW -->
             <section id="view-workout" class="space-y-4">
                 <div class="flex gap-1.5 overflow-x-auto pb-1 no-scrollbar">
                     <button onclick="selectDay('Monday')" class="day-btn shrink-0 text-xs px-3.5 py-2 rounded-xl font-bold transition-all border border-slate-800 bg-slate-950 text-slate-400">Mon</button>
@@ -88,7 +82,7 @@
                 <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-800 p-4 relative overflow-hidden">
                     <div class="flex justify-between items-start">
                         <div>
-                            <span class="text-[9px] font-extrabold uppercase tracking-widest text-purple-400 px-2 py-0.5 bg-purple-500/10 rounded-md" id="workout-category">Push Day</span>
+                            <span class="text-[9px] font-extrabold uppercase tracking-widest text-purple-400 px-2 py-0.5 bg-purple-50/10 rounded-md" id="workout-category">Push Day</span>
                             <h2 class="text-xl font-black text-white mt-1" id="workout-day-title">Monday Workout</h2>
                         </div>
                         <div class="text-right">
@@ -97,7 +91,6 @@
                     </div>
                 </div>
 
-                <!-- Exercises Container -->
                 <div id="exercise-list-container" class="space-y-4"></div>
 
                 <div class="pt-2">
@@ -108,6 +101,7 @@
                 </div>
             </section>
 
+            <!-- TAB 2: HISTORY & PROGRESS VIEW -->
             <section id="view-history" class="space-y-4 hidden">
                 <div class="bg-slate-800/50 rounded-2xl p-4 border border-slate-800">
                     <h2 class="text-lg font-extrabold text-white flex items-center gap-2">
@@ -136,6 +130,7 @@
                 </div>
             </section>
 
+            <!-- TAB 3: GUIDE VIEW -->
             <section id="view-guide" class="space-y-4 hidden">
                 <div class="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-800 rounded-2xl p-4">
                     <h2 class="text-lg font-black text-white flex items-center gap-2">
@@ -191,6 +186,7 @@
             </section>
         </main>
 
+        <!-- Navigation Tabs -->
         <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-slate-950 border-t border-slate-850 px-6 py-2 flex justify-between items-center z-40">
             <button onclick="switchTab('workout')" id="nav-workout" class="flex flex-col items-center gap-1 text-purple-500 transition-colors py-1 px-3">
                 <i data-lucide="dumbbell" class="w-5 h-5"></i>
@@ -207,7 +203,13 @@
         </nav>
     </div>
 
+    <!-- UNIFIED APPLICATION JS MODULE (Resolves timing/dependency race-conditions) -->
     <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Globalized Exercise Catalog with Smith Squats & Standing Glutes
         const workoutProgram = {
             Monday: {
                 title: "Monday: Push Day",
@@ -248,9 +250,9 @@
             Thursday: {
                 title: "Thursday: Leg Day",
                 category: "Lifting",
-                target: "Quads, Hamstrings, Calves",
+                target: "Quads, Hamstrings, Glutes",
                 exercises: [
-                    { name: "Smith Machine Squats", target: "3 Sets x 8 - 10 Reps (Position Feet Forward)", sets: 3 },
+                    { name: "Smith Machine Squats", target: "3 Sets x 8 - 10 Reps (Keep spine straight)", sets: 3 },
                     { name: "Leg Press Machine", target: "3 Sets x 8 - 10 Reps", sets: 3 },
                     { name: "Romanian Deadlifts (Dumbbell)", target: "3 Sets x 10 Reps", sets: 3 },
                     { name: "Seated/Lying Leg Curl Machine", target: "3 Sets x 10 - 12 Reps", sets: 3 },
@@ -297,6 +299,7 @@
         let isFirebaseReady = false;
         let localWorkoutHistory = [];
 
+        // Verified Firebase Credentials Configuration
         const __firebase_config = {
             apiKey: "AIzaSyDcf-6zE7Ly10ZKh1wRAZUtowuc24W8nQU",
             authDomain: "pfit-d3269.firebaseapp.com",
@@ -306,26 +309,34 @@
             appId: "1:100984802554:web:2d7206cefe14bb5a9b0d43"
         };
 
+        // Window Handshake Initializer
         window.addEventListener('DOMContentLoaded', async () => {
             lucide.createIcons();
             setCurrentDateBadge();
             detectAndSetCurrentDay();
             renderSelectedWorkout();
+            
+            // Print key directly to Diagnostics Box to confirm browser load state
+            const keyLabel = document.getElementById('diagnostics-key');
+            if (keyLabel) {
+                keyLabel.innerText = __firebase_config.apiKey;
+            }
+
             await initFirebase();
         });
 
         async function initFirebase() {
             const statusText = document.getElementById('app-status');
             const syncDot = document.getElementById('sync-indicator');
-            
-            // Print the key in memory directly to the diagnostics panel
-            const keyLabel = document.getElementById('diagnostics-key');
-            if (keyLabel) {
-                keyLabel.innerText = __firebase_config.apiKey;
-            }
+            const debugPanel = document.getElementById('diagnostics-msg');
 
             try {
-                const { initializeApp, getAuth, signInAnonymously, onAuthStateChanged, getFirestore } = window.firebaseImports;
+                const app = initializeApp(__firebase_config);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                appId = 'pf-workout-tracker-default';
+
+                await signInAnonymously(auth);
 
                 onAuthStateChanged(auth, async (user) => {
                     if (user) {
@@ -333,19 +344,22 @@
                         isFirebaseReady = true;
                         statusText.innerText = `Connected (Cloud)`;
                         syncDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-500 animate-none";
-                        document.getElementById('debug-error-log').classList.add('hidden');
+                        
+                        // Hide diagnostics on successful handshake
+                        const dBox = document.getElementById('diagnostics-box');
+                        if (dBox) dBox.classList.add('hidden');
+                        
                         await fetchCloudHistory();
                     }
                 });
             } catch (err) {
-                console.error("Initialization error details:", err);
+                console.error("Handshake fail:", err);
                 statusText.innerText = "Offline Mode (Backup)";
                 syncDot.className = "w-2.5 h-2.5 rounded-full bg-blue-500 animate-none";
                 
-                const debugArea = document.getElementById('debug-error-log');
-                if (debugArea) {
-                    debugArea.classList.remove('hidden');
-                    document.getElementById('debug-error-text').innerText = `${err.name || 'Error'}: ${err.message || err}`;
+                if (debugPanel) {
+                    debugPanel.innerText = `${err.name}: ${err.message}`;
+                    debugPanel.classList.add('text-red-400', 'font-bold');
                 }
                 loadOfflineHistory();
             }
@@ -426,7 +440,7 @@
                                 <span class="text-[9px] font-bold text-slate-500 border border-slate-800 rounded px-1.5 py-0.5 uppercase">Pool</span>
                             </div>
                             <div class="mt-4 pt-3 border-t border-slate-900 flex justify-between items-center">
-                                <input type="number" id="swim-input-mins" placeholder="Mins swam" class="w-28 bg-slate-900 border border-slate-800 text-xs py-2 px-3 rounded-lg text-slate-200 focus:border-sky-500 focus:outline-none font-bold">
+                                <input type="number" id="swim-input-mins" placeholder="Mins swam" class="w-28 bg-slate-900 border border-slate-800 text-xs py-2 px-3 rounded-lg text-slate-200 focus:border-sky-500 focus:outline-none">
                                 <button onclick="markSwimReady(this)" class="bg-sky-600/20 text-sky-400 border border-sky-500/30 font-bold text-xs py-2 px-4 rounded-xl transition-all hover:bg-sky-600/30">Set Done</button>
                             </div>
                         </div>`;
@@ -572,14 +586,13 @@
             }
 
             if (isFirebaseReady) {
-                const { collection, addDoc } = window.firebaseImports;
                 try {
                     const path = collection(db, 'artifacts', appId, 'users', userId, 'workout_logs');
                     await addDoc(path, submission);
                     showToast("Workout Saved to Cloud!", "success");
                     await fetchCloudHistory();
                 } catch (err) {
-                    console.error("Save failed, writing local backup instead:", err);
+                    console.error(err);
                     saveBackupLocal(submission);
                 }
             } else {
@@ -607,7 +620,6 @@
         }
 
         async function fetchCloudHistory() {
-            const { collection, getDocs } = window.firebaseImports;
             try {
                 const path = collection(db, 'artifacts', appId, 'users', userId, 'workout_logs');
                 const snapshot = await getDocs(path);
@@ -617,12 +629,7 @@
                 localWorkoutHistory = list;
                 renderHistoryLogs();
             } catch (err) {
-                console.error("Database read failure:", err);
-                const debugArea = document.getElementById('debug-error-log');
-                if (debugArea) {
-                    debugArea.classList.remove('hidden');
-                    document.getElementById('debug-error-text').innerText = `Database Load Crash: ${err.message || err}`;
-                }
+                console.error(err);
                 loadOfflineHistory();
             }
         }
