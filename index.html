@@ -54,15 +54,25 @@
             <p class="text-[10px] text-slate-500 mt-1.5 italic">This block is displaying the live handshake feedback from the Firebase server.</p>
         </div>
 
-        <!-- Main Content Core -->
         <main class="flex-1 p-4 overflow-y-auto">
-            <!-- Toast Notifications Container -->
-            <div id="toast-box" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-300 opacity-0 transform translate-y-2">
-                <div class="bg-slate-800 text-white border border-slate-700 px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-2 text-xs font-semibold">
-                    <span id="toast-icon"></span>
-                    <span id="toast-message">Logged!</span>
+            <!-- Cloud Diagnostics Assistant -->
+            <div id="diagnostics-box" class="bg-red-950/40 border border-red-500/30 rounded-2xl p-4 mt-2">
+                <div class="flex items-start gap-2.5">
+                    <span class="text-red-400 mt-0.5">⚠️</span>
+                    <div>
+                        <h3 class="text-xs font-black text-red-400">Cloud Diagnostics Assistant</h3>
+                        <p id="diagnostics-msg" class="text-[11px] font-mono text-red-200 mt-1 leading-relaxed">
+                            Awaiting live database response...
+                        </p>
+                        <p class="text-[10px] font-mono text-slate-400 mt-2 border-t border-red-500/10 pt-2">
+                            Active Key in Browser: <span id="diagnostics-key" class="text-amber-400 font-bold">detecting...</span>
+                        </p>
+                        <p class="text-[9px] text-red-400/60 mt-1.5 italic">This block is displaying the live handshake feedback from the Firebase server.</p>
+                    </div>
                 </div>
             </div>
+
+            <div id="toast-box" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-300 opacity-0 transform translate-y-2">
 
             <section id="view-workout" class="space-y-4">
                 <div class="flex gap-1.5 overflow-x-auto pb-1 no-scrollbar">
@@ -307,17 +317,15 @@
         async function initFirebase() {
             const statusText = document.getElementById('app-status');
             const syncDot = document.getElementById('sync-indicator');
+            
+            // Print the key in memory directly to the diagnostics panel
+            const keyLabel = document.getElementById('diagnostics-key');
+            if (keyLabel) {
+                keyLabel.innerText = __firebase_config.apiKey;
+            }
+
             try {
                 const { initializeApp, getAuth, signInAnonymously, onAuthStateChanged, getFirestore } = window.firebaseImports;
-                const app = initializeApp(__firebase_config);
-                auth = getAuth(app);
-                db = getFirestore(app);
-                appId = 'pf-workout-tracker-default';
-
-                statusText.innerText = "Authorizing App...";
-                syncDot.className = "w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse";
-
-                await signInAnonymously(auth);
 
                 onAuthStateChanged(auth, async (user) => {
                     if (user) {
