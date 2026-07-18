@@ -67,7 +67,7 @@
               <span class="w-1.5 h-1.5 rounded-full bg-blue-400 mr-1.5 animate-pulse"></span>
               Connecting...
             </span>
-            <span class="text-xs text-gray-400">v2.1-Schedule</span>
+            <span class="text-xs text-gray-400">v2.2-Machines</span>
           </div>
         </div>
       </div>
@@ -83,11 +83,11 @@
   <!-- MOTIVATIONAL TOP BANNER -->
   <section class="px-4 pt-4 max-w-md mx-auto w-full">
     <div class="bg-gradient-to-r from-purple-950/40 to-blue-950/40 border border-purple-900/30 rounded-2xl p-4 flex items-start gap-3">
-      <div class="text-2xl mt-0.5">🌟</div>
+      <div class="text-2xl mt-0.5">💪</div>
       <div>
-        <h4 class="text-sm font-bold text-purple-200">Recommitment Phase: Week 1</h4>
+        <h4 class="text-sm font-bold text-purple-200">Bastrop PF Machine Program</h4>
         <p class="text-xs text-purple-300 mt-1 leading-relaxed">
-          Welcome back! We scaled down your workouts to 2-3 manageable days. Take each rep slow and focus on controlled tension. You've got this!
+          Recommitment Phase: 100% Machine-Guided. No bodyweight stress, no joint strain, just smooth selectorized tension.
         </p>
       </div>
     </div>
@@ -200,7 +200,7 @@
             The 3 - 1 - 1 tempo system:
           </h4>
           <ul class="space-y-2 text-xs text-gray-300 pl-4 list-disc">
-            <li><strong>3s Descent:</strong> Lower the barbell/stack down counting 1, 2, 3 slowly.</li>
+            <li><strong>3s Descent:</strong> Lower the weight stack down counting 1, 2, 3 slowly.</li>
             <li><strong>1s Pause:</strong> Active contraction hold at the bottom of the movement.</li>
             <li><strong>1s Lift:</strong> Exhale and push the weight up smoothly.</li>
           </ul>
@@ -248,28 +248,28 @@
     window.saveActiveSession = saveActiveSession;
     window.toggleExerciseDone = toggleExerciseDone;
 
-    // DEFINING OUR RECOMMIT PROGRAM WORKOUTS
+    // DEFINING OUR RECOMMIT PROGRAM WORKOUTS - 100% PF BASTROP MACHINE FOCUS
     const recommitWorkouts = {
       Monday: {
         type: "Lifting Day",
-        title: "Monday: Upper Body Re-Intro",
-        subtitle: "Gentle muscular conditioning targeting upper pull and push mechanics.",
+        title: "Monday: Upper Body Machines",
+        subtitle: "Guided paths only. Protects rotator cuffs and stabilizes your pull/push mechanics.",
         isRest: false,
         exercises: [
-          { name: "Assisted Lat Pulldown", target: "3 sets of 10 reps (Slow controlled focus)", inputs: ["Weight (lbs)"], icon: "arrow-down-to-line", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo" },
-          { name: "Dumbbell Flat Bench Press", target: "3 sets of 12 reps (Focus on bottom chest stretch)", inputs: ["Weight (lbs)"], icon: "shield", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo" },
-          { name: "Seated Cable Row", target: "3 sets of 10 reps (Hold peak squeeze 1s)", inputs: ["Weight (lbs)"], icon: "shuffle", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo" },
-          { name: "Core Plank Hold", target: "3 sets of 30-45 seconds", inputs: ["Time (secs)"], icon: "clock", values: ["", ""], isDone: false, tempo: "Steady breathing" }
+          { name: "Seated Chest Press Machine", target: "3 sets of 12 reps (Guided horizontal push)", inputs: ["Weight (lbs)"], icon: "shield", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo: 3s lowering stretch" },
+          { name: "Assisted Lat Pulldown Machine", target: "3 sets of 10 reps (Slow controlled focus)", inputs: ["Weight (lbs)"], icon: "arrow-down-to-line", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo: Feel the lats stretch" },
+          { name: "Seated Row Machine", target: "3 sets of 10 reps (Hold peak squeeze 1s at chest)", inputs: ["Weight (lbs)"], icon: "shuffle", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo: Pin shoulder blades" },
+          { name: "Seated Abdominal Crunch Machine", target: "3 sets of 15 reps (Fully supported spine core burn)", inputs: ["Weight (lbs)"], icon: "refresh-cw", values: ["", ""], isDone: false, tempo: "2s contraction hold at bottom" }
         ]
       },
       Tuesday: {
         type: "Swim Day",
-        title: "Tuesday: Recovery & Core Flush",
-        subtitle: "Active joint movement to flush out Monday's stiffness.",
+        title: "Tuesday: Recovery & Pool Support",
+        subtitle: "Active joint movement to flush out Monday's upper body stiffness.",
         isRest: false,
         exercises: [
-          { name: "Leisurely Rec Swim", target: "20 to 30 mins (Smooth continuous laps)", inputs: ["Mins swam"], icon: "waves", values: ["", ""], isDone: false, tempo: "⏰ Must arrive before 9:00 PM — Pool gates lock at 9!" },
-          { name: "Full-Body Static Stretching", target: "15 mins focusing on chest, hips, & hamstrings", inputs: ["Done (yes/no)"], icon: "activity", values: ["", ""], isDone: false, tempo: "Gentle static recovery holds" }
+          { name: "Leisurely Rec Swim", target: "20 to 30 mins (Smooth continuous laps)", inputs: ["Mins swam"], icon: "waves", values: ["", ""], isDone: false, tempo: "⏰ Arrive before 9:00 PM — Pool gates lock at 9!" },
+          { name: "Pool Wall Supported stretches", target: "15 mins of chest expansion and calf lengthening using pool edge", inputs: ["Done (yes/no)"], icon: "activity", values: ["", ""], isDone: false, tempo: "Zero-gravity gentle static holds" }
         ]
       },
       Wednesday: {
@@ -281,13 +281,13 @@
       },
       Thursday: {
         type: "Lifting Day",
-        title: "Thursday: Smith Machine Squat & Leg Day",
-        subtitle: "Targeting quads, glutes, and calves. Control the descent to avoid sore knees.",
+        title: "Thursday: Smith Machine Squat & Legs",
+        subtitle: "Targeting quads, glutes, and calves on guided selectorized equipment.",
         isRest: false,
         exercises: [
-          { name: "Smith Machine Squats", target: "3 sets of 10 reps (Feet slightly forward)", inputs: ["Weight (lbs)"], icon: "dumbbell", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo: 3s down, pause, push!" },
-          { name: "Standing Glute Kickbacks", target: "3 sets of 12 reps each side (Mind-muscle squeeze)", inputs: ["Weight (lbs)"], icon: "sparkles", values: ["", ""], isDone: false, tempo: "1s Hold at peak squeeze" },
-          { name: "Seated Calf Raises", target: "3 sets of 15 reps (Full range ankle motion)", inputs: ["Weight (lbs)"], icon: "footprints", values: ["", ""], isDone: false, tempo: "3s eccentric stretch" }
+          { name: "Smith Machine Squats", target: "3 sets of 10 reps (Feet slightly forward to protect knees)", inputs: ["Weight (lbs)"], icon: "dumbbell", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo: 3s down, pause, push!" },
+          { name: "Cable Glute Kickbacks", target: "3 sets of 12 reps each side (Using cable ankle strap)", inputs: ["Weight (lbs)"], icon: "sparkles", values: ["", ""], isDone: false, tempo: "1s Hold at top peak kick" },
+          { name: "Seated Calf Press Machine", target: "3 sets of 15 reps (Use leg press or calf machine plate)", inputs: ["Weight (lbs)"], icon: "footprints", values: ["", ""], isDone: false, tempo: "3s stretch, hold 1s at stretch" }
         ]
       },
       Friday: {
