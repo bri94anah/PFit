@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PF Gym Tracker</title>
+  <title>PF Gym & Swim Tracker</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -61,13 +61,13 @@
           <i data-lucide="dumbbell" class="w-5 h-5 text-white"></i>
         </div>
         <div>
-          <h1 class="font-bold text-base leading-tight">PF Gym Tracker</h1>
+          <h1 class="font-bold text-base leading-tight">PF Gym &amp; Swim</h1>
           <div class="flex items-center gap-2">
             <span id="connectionBadge" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-blue-900/40 text-blue-300">
               <span class="w-1.5 h-1.5 rounded-full bg-blue-400 mr-1.5 animate-pulse"></span>
               Connecting...
             </span>
-            <span class="text-xs text-gray-400">v2.3-Hybrid</span>
+            <span class="text-xs text-gray-400">v2.6-Safety</span>
           </div>
         </div>
       </div>
@@ -75,7 +75,7 @@
       <!-- Date & Time Indicator -->
       <div class="text-right">
         <span class="text-xs text-gray-400 block" id="currentDateStr">Saturday - Jul 18</span>
-        <span id="headerTimeBadge" class="text-[10px] text-accentPink font-semibold bg-pink-950/40 px-2 py-0.5 rounded-full border border-pink-900/30">Lifting Session</span>
+        <span id="headerTimeBadge" class="text-[10px] text-accentPink font-semibold bg-pink-950/40 px-2 py-0.5 rounded-full border border-pink-900/30">Active Tracker</span>
       </div>
     </div>
   </header>
@@ -83,11 +83,11 @@
   <!-- MOTIVATIONAL TOP BANNER -->
   <section class="px-4 pt-4 max-w-md mx-auto w-full">
     <div class="bg-gradient-to-r from-purple-950/40 to-blue-950/40 border border-purple-900/30 rounded-2xl p-4 flex items-start gap-3">
-      <div class="text-2xl mt-0.5">💪</div>
+      <div class="text-2xl mt-0.5">⚖️</div>
       <div>
-        <h4 class="text-sm font-bold text-purple-200">Bastrop PF Machine & Free Weight Program</h4>
+        <h4 class="text-sm font-bold text-purple-200">Bastrop Structured Split</h4>
         <p class="text-xs text-purple-300 mt-1 leading-relaxed">
-          Recommitment Phase: Monday, Tuesday, & Thursday lifting split utilizing high-stability machines and isolated free weights.
+          3 Lifting Days, 2 Swimming Recovery Days (Mind the 9 PM gate lockout!), and 2 Complete Rest Days for deep downtime.
         </p>
       </div>
     </div>
@@ -104,11 +104,11 @@
       </button>
       <button onclick="switchDay('Tuesday')" id="btn-Tuesday" class="flex-1 py-2 text-xs font-bold rounded-xl transition duration-150 flex flex-col items-center gap-1">
         <span>Tue</span>
-        <span class="w-1.5 h-1.5 rounded-full bg-accentPink"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-accentPurple"></span>
       </button>
-      <button onclick="switchDay('Wednesday')" id="btn-Wednesday" class="flex-1 py-2 text-xs font-bold text-gray-400 rounded-xl transition duration-150 flex flex-col items-center gap-1">
+      <button onclick="switchDay('Wednesday')" id="btn-Wednesday" class="flex-1 py-2 text-xs font-bold rounded-xl transition duration-150 flex flex-col items-center gap-1">
         <span>Wed</span>
-        <span class="w-1.5 h-1.5 rounded-full bg-gray-700"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-accentPink"></span>
       </button>
       <button onclick="switchDay('Thursday')" id="btn-Thursday" class="flex-1 py-2 text-xs font-bold rounded-xl transition duration-150 flex flex-col items-center gap-1">
         <span>Thu</span>
@@ -118,9 +118,9 @@
         <span>Fri</span>
         <span class="w-1.5 h-1.5 rounded-full bg-gray-700"></span>
       </button>
-      <button onclick="switchDay('Saturday')" id="btn-Saturday" class="flex-1 py-2 text-xs font-bold text-gray-400 rounded-xl transition duration-150 flex flex-col items-center gap-1">
+      <button onclick="switchDay('Saturday')" id="btn-Saturday" class="flex-1 py-2 text-xs font-bold rounded-xl transition duration-150 flex flex-col items-center gap-1">
         <span>Sat</span>
-        <span class="w-1.5 h-1.5 rounded-full bg-gray-700"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-accentPink"></span>
       </button>
       <button onclick="switchDay('Sunday')" id="btn-Sunday" class="flex-1 py-2 text-xs font-bold text-gray-400 rounded-xl transition duration-150 flex flex-col items-center gap-1">
         <span>Sun</span>
@@ -140,7 +140,7 @@
             Scheduled Session
           </span>
         </div>
-        <h2 id="dayTitle" class="text-xl font-extrabold mt-3 tracking-tight">Monday: Upper Body</h2>
+        <h2 id="dayTitle" class="text-xl font-extrabold mt-3 tracking-tight">Monday: Upper Body Machines</h2>
         <p id="daySubtitle" class="text-xs text-gray-400 mt-1 leading-relaxed">Beginner muscle re-activation. Focus purely on slow, smooth form.</p>
       </div>
 
@@ -187,29 +187,16 @@
 
     <!-- GUIDE VIEWER -->
     <div id="tab-guide" class="hidden space-y-4">
-      <div class="bg-cardbg border border-gray-800 rounded-2xl p-5 space-y-4">
-        <h3 class="text-lg font-bold">Recommitment Tempo Guide</h3>
+      <div class="bg-cardbg border border-gray-850 rounded-2xl p-5 space-y-4">
+        <h3 class="text-lg font-bold">Training &amp; Environment Guides</h3>
         <p class="text-xs text-gray-400 leading-relaxed">
-          Because you've rested for two weeks, your nervous system is re-adapting. 
-          Use **Slow Controlled Tension** rather than heavy loads to avoid excessive next-day soreness.
+          Utilize the machine tracks to keep lines of movement fully supported. On rest days, prioritize total physical relaxation.
         </p>
 
-        <div class="bg-slate-950/40 border border-gray-850 p-4 rounded-xl space-y-3">
-          <h4 class="text-sm font-bold text-accentPink flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-accentPink"></span>
-            The 3 - 1 - 1 tempo system:
-          </h4>
-          <ul class="space-y-2 text-xs text-gray-300 pl-4 list-disc">
-            <li><strong>3s Descent:</strong> Lower the weight stack down counting 1, 2, 3 slowly.</li>
-            <li><strong>1s Pause:</strong> Active contraction hold at the bottom of the movement.</li>
-            <li><strong>1s Lift:</strong> Exhale and push the weight up smoothly.</li>
-          </ul>
-        </div>
-
-        <div class="bg-slate-950/40 border border-gray-850 p-4 rounded-xl space-y-2">
-          <h4 class="text-sm font-bold text-brandGreen">🔥 Gym Strategy:</h4>
+        <div class="bg-slate-950/40 border border-gray-800 p-4 rounded-xl space-y-2">
+          <h4 class="text-sm font-bold text-brandGreen">🏊‍♀️ Facility Gate Lock Reminders (Wed &amp; Sat):</h4>
           <p class="text-xs text-gray-300 leading-relaxed">
-            Mondays, Tuesdays &amp; Thursdays are focused lifting blocks. Stick to the machine tracking guidelines to maximize stability while building your core free-weight foundations.
+            For swimming recovery windows on Wednesdays and Saturdays, plan carefully: the access gates lock automatically at **9:00 PM** sharp. The pool facility closes completely at **10:00 PM**.
           </p>
         </div>
       </div>
@@ -222,7 +209,7 @@
     <div class="max-w-md mx-auto flex items-center justify-around text-center">
       <button onclick="switchTab('workout')" id="nav-workout" class="flex-1 text-accentPurple flex flex-col items-center gap-1">
         <i data-lucide="dumbbell" class="w-5 h-5"></i>
-        <span class="text-[10px] font-semibold">Lifting Day</span>
+        <span class="text-[10px] font-semibold">Track Activity</span>
       </button>
       <button onclick="switchTab('logs')" id="nav-logs" class="flex-1 text-gray-400 flex flex-col items-center gap-1 hover:text-gray-200">
         <i data-lucide="line-chart" class="w-5 h-5"></i>
@@ -247,7 +234,7 @@
     window.saveActiveSession = saveActiveSession;
     window.toggleExerciseDone = toggleExerciseDone;
 
-    // DEFINING OUR RECOMMIT PROGRAM WORKOUTS - 100% PF BASTROP MACHINE & FREE WEIGHT FOCUS
+    // TRACKER CALENDAR split configuration
     const recommitWorkouts = {
       Monday: {
         type: "Lifting Day",
@@ -264,21 +251,24 @@
       Tuesday: {
         type: "Lifting Day",
         title: "Tuesday: Arms & Core Isolation",
-        subtitle: "Using Planet Fitness selectorized pulley tracks and standalone free-weight dumbbell tracks.",
+        subtitle: "Using Planet Fitness selectorized pulley tracks and isolated free-weight structures.",
         isRest: false,
         exercises: [
           { name: "Dumbbell Bicep Curls (Free Weight Track)", target: "3 sets of 12 reps each arm", inputs: ["Weight (lbs)"], icon: "dumbbell", values: ["", ""], isDone: false, tempo: "Squeeze tight at the peak of rotation" },
           { name: "Cable Tricep Pushdowns (Pulley Machine)", target: "3 sets of 12 reps (Using rope attachment)", inputs: ["Weight (lbs)"], icon: "arrow-down", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo: Full extension at base" },
           { name: "Seated Dumbbell Shoulder Press", target: "3 sets of 10 reps (Isolated vertical push)", inputs: ["Weight (lbs)"], icon: "shield", values: ["", ""], isDone: false, tempo: "Control descent, protect the joints" },
-          { name: "Captain's Chair Leg Raises (Bodyweight / Machine Tower)", target: "3 sets to failure (Core engagement)", inputs: ["Reps hit"], icon: "activity", values: ["", ""], isDone: false, tempo: "Control the hang, no swinging legs" }
+          { name: "Captain's Chair Leg Raises (Core Tower)", target: "3 sets to failure (Core engagement)", inputs: ["Reps hit"], icon: "activity", values: ["", ""], isDone: false, tempo: "Control the hang, no swinging legs" }
         ]
       },
       Wednesday: {
-        type: "Rest Day",
-        title: "Wednesday: Rest & Muscle Repair",
-        subtitle: "Focus on sleep and physical recovery. No heavy movements.",
-        isRest: true,
-        exercises: []
+        type: "Swim Day",
+        title: "Wednesday: Mid-Week Recovery Swim",
+        subtitle: "Active zero-gravity pool movements to flush out muscle stiffness from lifting days.",
+        isRest: false,
+        exercises: [
+          { name: "Leisurely Recovery Swim", target: "20 to 30 mins (Smooth continuous laps)", inputs: ["Mins swam"], icon: "waves", values: ["", ""], isDone: false, tempo: "⏰ Gate Locks: 9:00 PM | Pool Closes: 10:00 PM" },
+          { name: "Pool Edge Decompression Stretches", target: "10-15 mins of chest expansions and torso rotations", inputs: ["Done (yes/no)"], icon: "activity", values: ["", ""], isDone: false, tempo: "Low-gravity gentle static alignment" }
+        ]
       },
       Thursday: {
         type: "Lifting Day",
@@ -293,22 +283,25 @@
       },
       Friday: {
         type: "Rest Day",
-        title: "Friday: Active Rest Interval",
-        subtitle: "Deep structural breathing and light walking to end the week.",
+        title: "Friday: Complete Physical Rest",
+        subtitle: "Deep relaxation day. Focus on little to no movement to repair core muscle structures.",
         isRest: true,
         exercises: []
       },
       Saturday: {
-        type: "Rest Day",
-        title: "Saturday: Weekend Active Recovery",
-        subtitle: "Optimal day for deep joint hydration, hydration, and long walks.",
-        isRest: true,
-        exercises: []
+        type: "Swim Day",
+        title: "Saturday: Weekend Hydration Swim",
+        subtitle: "Gentle muscular conditioning and physical decompression.",
+        isRest: false,
+        exercises: [
+          { name: "Leisurely Recovery Swim", target: "20 to 30 mins (Smooth lap pacing)", inputs: ["Mins swam"], icon: "waves", values: ["", ""], isDone: false, tempo: "⏰ Gate Locks: 9:00 PM | Pool Closes: 10:00 PM" },
+          { name: "Pool Wall Alignment Extensions", target: "15 mins leg lengthening and joint opening holds", inputs: ["Done (yes/no)"], icon: "activity", values: ["", ""], isDone: false, tempo: "Zero weight physical extension" }
+        ]
       },
       Sunday: {
         type: "Rest Day",
-        title: "Sunday: Prep & Relaxation",
-        subtitle: "Unwind your central nervous system to dominate the Monday block.",
+        title: "Sunday: Complete Rest & Prep",
+        subtitle: "Unwind your central nervous system with minimal physical strain to dominate the Monday block.",
         isRest: true,
         exercises: []
       }
@@ -324,7 +317,6 @@
     let appId = "default-pfit-app";
     let user = null;
 
-    // KEY VERIFIED IN LOWERCASE 'l' handshake
     const __firebase_config = {
       apiKey: "AIzaSyBcf-6zE7Ly10ZKhlwRAZUtowuc24W8nQU",
       authDomain: "pfit-d3269.firebaseapp.com",
@@ -336,17 +328,14 @@
 
     // START ON DOCUMENT LOADED
     window.addEventListener('DOMContentLoaded', async () => {
-      // Setup current visual days
       setCurrentDayOnPageLoad();
       updateNavigationUI();
       renderSelectedDay();
 
-      // Initiate Firebase Auth
       try {
         const app = initializeApp(__firebase_config);
         auth = getAuth(app);
         db = getFirestore(app);
-        
         const badge = document.getElementById("connectionBadge");
         
         await signInAnonymously(auth);
@@ -356,8 +345,6 @@
             user = currentUser;
             badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span> Connected (Cloud)`;
             badge.className = "inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-emerald-950/40 text-emerald-300 border border-emerald-900/30";
-            
-            // Begin monitoring training database logs
             syncHistoryData();
           }
         });
@@ -369,13 +356,11 @@
       }
     });
 
-    // DETERMINE ACTIVE CALENDAR DAY
     function setCurrentDayOnPageLoad() {
       const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
       const dateObj = new Date();
       const localizedName = days[dateObj.getDay()];
       
-      // Auto assign if valid day config exists
       if (recommitWorkouts[localizedName]) {
         currentDay = localizedName;
       }
@@ -384,11 +369,8 @@
       document.getElementById("currentDateStr").innerText = formattedDate;
     }
 
-    // SWITCH TABS INTERFACE
     function switchTab(tabId) {
       activeTab = tabId;
-      
-      // Update UI Tabs Styling
       const tabGroup = ["workout", "logs", "guide"];
       tabGroup.forEach(id => {
         const el = document.getElementById(`tab-${id}`);
@@ -405,7 +387,6 @@
       });
     }
 
-    // SWITCH CALENDAR TRACKING DAY
     function switchDay(dayName) {
       currentDay = dayName;
       updateNavigationUI();
@@ -418,14 +399,12 @@
       days.forEach(day => {
         const button = document.getElementById(`btn-${day}`);
         if (day === currentDay) {
-          if (day === "Tuesday") {
+          if (recommitWorkouts[day].type === "Swim Day") {
             button.className = "flex-1 py-2 text-xs font-bold bg-accentPink text-white rounded-xl shadow-lg transition duration-150 flex flex-col items-center gap-1";
+          } else if (recommitWorkouts[day].isRest) {
+            button.className = "flex-1 py-2 text-xs font-bold bg-slate-800 text-gray-300 rounded-xl transition duration-150 flex flex-col items-center gap-1";
           } else {
             button.className = "flex-1 py-2 text-xs font-bold bg-accentPurple text-white rounded-xl shadow-lg transition duration-150 flex flex-col items-center gap-1";
-          }
-          // If rest day, apply neutral grey active color
-          if (recommitWorkouts[day].isRest) {
-            button.className = "flex-1 py-2 text-xs font-bold bg-slate-800 text-gray-300 rounded-xl transition duration-150 flex flex-col items-center gap-1";
           }
         } else {
           button.className = "flex-1 py-2 text-xs font-bold text-gray-400 hover:text-gray-200 rounded-xl transition duration-150 flex flex-col items-center gap-1";
@@ -433,7 +412,6 @@
       });
     }
 
-    // RENDER SELECTED DAY WITH DYNAMIC TIMESLOT MONITOR
     function renderSelectedDay() {
       const workout = activeProgram[currentDay];
       const headerBlock = document.getElementById("dayHeaderBlock");
@@ -446,36 +424,34 @@
       const timeSlotLabel = document.getElementById("timeSlotLabel");
       const headerTimeBadge = document.getElementById("headerTimeBadge");
 
-      // Dynamic Header & Time Badge Settings
-      if (currentDay === "Tuesday") {
-        timeSlotLabel.innerHTML = `<i data-lucide="clock" class="w-3.5 h-3.5 text-accentPink"></i> Hypertrophy Slot`;
-        headerTimeBadge.innerText = "Lifting Session";
-        headerTimeBadge.className = "text-[10px] text-accentPink font-black bg-pink-950/50 px-2 py-0.5 rounded-full border border-accentPink/40";
-      } else if (currentDay === "Monday" || currentDay === "Thursday") {
-        timeSlotLabel.innerHTML = `<i data-lucide="clock" class="w-3.5 h-3.5 text-accentPurple"></i> Main Training Slot`;
+      // Dynamic Header UI configuration
+      if (workout.type === "Swim Day") {
+        timeSlotLabel.innerHTML = `<i data-lucide="waves" class="w-3.5 h-3.5 text-accentPink"></i> Gate Locks at 9:00 PM (Closes 10 PM)`;
+        headerTimeBadge.innerText = "Gate Locks 9PM";
+        headerTimeBadge.className = "text-[10px] text-accentPink font-black bg-pink-950/50 px-2 py-0.5 rounded-full border border-accentPink/40 animate-pulse";
+      } else if (!workout.isRest) {
+        timeSlotLabel.innerHTML = `<i data-lucide="clock" class="w-3.5 h-3.5 text-accentPurple"></i> Training Window`;
         headerTimeBadge.innerText = "Lifting Session";
         headerTimeBadge.className = "text-[10px] text-accentPurple font-semibold bg-purple-950/40 px-2 py-0.5 rounded-full border border-purple-900/30";
       } else {
-        timeSlotLabel.innerHTML = `<i data-lucide="coffee" class="w-3.5 h-3.5 text-gray-500"></i> Active Recovery`;
-        headerTimeBadge.innerText = "Rest/Recovery";
+        timeSlotLabel.innerHTML = `<i data-lucide="coffee" class="w-3.5 h-3.5 text-gray-500"></i> Absolute Downtime`;
+        headerTimeBadge.innerText = "Complete Rest";
         headerTimeBadge.className = "text-[10px] text-gray-400 font-semibold bg-slate-900 px-2 py-0.5 rounded-full border border-gray-800";
       }
 
-      // Set titles
       dayTitle.innerText = workout.title;
       daySubtitle.innerText = workout.subtitle;
       dayTypeBadge.innerText = workout.type;
 
-      // Adjust header color gradients depending on day type
       if (workout.isRest) {
         headerBlock.className = "bg-gradient-to-r from-cardbg to-slate-950 border border-gray-800 rounded-2xl p-5 opacity-75";
         dayTypeBadge.className = "text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700";
         listContainer.innerHTML = `
           <div class="bg-cardbg border border-gray-850 p-6 rounded-2xl text-center space-y-3">
             <div class="text-4xl">😴</div>
-            <h4 class="font-bold text-sm">Active Muscular Rest Day</h4>
+            <h4 class="font-bold text-sm">Complete Muscle Repair Day</h4>
             <p class="text-xs text-gray-400 max-w-xs mx-auto leading-relaxed">
-              Your body is actively remodeling and storing fuel. Aim for healthy sleep, light mobility walking, and keep your hydration levels high!
+              No performance goals, no heavy strain, little to no structured movement. Let your body down-regulate completely to rebuild fibers safely.
             </p>
           </div>
         `;
@@ -484,13 +460,12 @@
         saveBtn.classList.remove("hidden");
         headerBlock.className = "bg-gradient-to-r from-cardbg to-slate-900 border border-gray-800 rounded-2xl p-5";
         
-        if (currentDay === "Tuesday") {
+        if (workout.type === "Swim Day") {
           dayTypeBadge.className = "text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full bg-accentPink/20 text-accentPink border border-accentPink/30";
         } else {
           dayTypeBadge.className = "text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full bg-accentPurple/20 text-accentPurple border border-accentPurple/30";
         }
 
-        // Build exercise nodes
         listContainer.innerHTML = "";
         workout.exercises.forEach((ex, idx) => {
           const card = document.createElement("div");
@@ -532,7 +507,6 @@
               </button>
             </div>
 
-            <!-- Tempo Cues & Safety Cues -->
             ${ex.tempo ? `
               <div class="mt-3 py-1 px-2 rounded-lg bg-purple-950/20 border border-purple-900/25 flex items-center gap-1.5">
                 <span class="w-1.5 h-1.5 rounded-full bg-accentPurple animate-pulse"></span>
@@ -540,7 +514,6 @@
               </div>
             ` : ''}
 
-            <!-- Inputs Set Section -->
             <div class="mt-4 flex gap-3 flex-wrap">
               ${inputHTML}
             </div>
@@ -551,28 +524,24 @@
       lucide.createIcons();
     }
 
-    // INTERNAL CHANGE VALUE TRACKER
     window.updateInputVal = function(dayName, exIdx, inputIdx, val) {
       activeProgram[dayName].exercises[exIdx].values[inputIdx] = val;
     };
 
-    // MARK DONE
     function toggleExerciseDone(dayName, exIdx) {
       activeProgram[dayName].exercises[exIdx].isDone = !activeProgram[dayName].exercises[exIdx].isDone;
       renderSelectedDay();
     }
 
-    // SAVE INTERFACE WRITER TO FIRESTORE
     async function saveActiveSession() {
       const workout = activeProgram[currentDay];
       const itemsToLog = workout.exercises.filter(ex => ex.isDone);
       
       if (itemsToLog.length === 0) {
-        showGlobalAlert("No exercises marked done! Click 'Mark Done' on exercises you completed before saving.");
+        showGlobalAlert("No exercises marked done! Click 'Mark Done' before saving.");
         return;
       }
 
-      // Format clean payload
       const timestamp = Date.now();
       const cleanData = {
         dayName: currentDay,
@@ -589,7 +558,7 @@
       };
 
       if (!user) {
-        showGlobalAlert("Saving session locally only. Connect to the Internet to sync with the cloud database.");
+        showGlobalAlert("Saving session locally only.");
         saveLocalLog(cleanData);
         return;
       }
@@ -597,21 +566,16 @@
       try {
         const docId = `log-${timestamp}`;
         const ref = doc(db, 'artifacts', appId, 'public', 'data', 'workoutLogs', docId);
-        
         await setDoc(ref, cleanData);
-        showGlobalAlert(`🎉 Workout saved to Cloud! Recommitment Complete for ${currentDay}.`);
-        
-        // Reset inputs visual state
+        showGlobalAlert(`🎉 Activity synced to Cloud repository for ${currentDay}.`);
         activeProgram[currentDay] = JSON.parse(JSON.stringify(recommitWorkouts[currentDay]));
         renderSelectedDay();
       } catch (err) {
-        console.error("Firestore database write failed: ", err);
-        showGlobalAlert(`Write Error: ${err.message}. Retrying via local memory cache.`);
+        console.error("Database write error: ", err);
         saveLocalLog(cleanData);
       }
     }
 
-    // LOCAL STORAGE CACHE BACKUP
     function saveLocalLog(cleanData) {
       let currentCache = JSON.parse(localStorage.getItem('pfit_local_logs') || '[]');
       currentCache.unshift(cleanData);
@@ -619,27 +583,17 @@
       renderHistoryUI(currentCache);
     }
 
-    // MONITOR REALTIME GRAPH LOGS FROM CLOUD
     function syncHistoryData() {
       if (!user) return;
       const ref = collection(db, 'artifacts', appId, 'public', 'data', 'workoutLogs');
-      
-      // Simple collection monitoring obeying Rule 2 (no ordering/complex constraints on listener)
       onSnapshot(ref, (snap) => {
         const cloudData = [];
-        snap.forEach(doc => {
-          cloudData.push(doc.data());
-        });
-        
-        // Sort safely inside javascript memory
+        snap.forEach(doc => cloudData.push(doc.data()));
         cloudData.sort((a,b) => b.timestamp - a.timestamp);
         renderHistoryUI(cloudData);
-      }, (err) => {
-        console.error("onSnapshot sync error: ", err);
       });
     }
 
-    // POPULATE HISTORICAL TIMELINE
     function renderHistoryUI(data) {
       const historyFeed = document.getElementById("historyFeed");
       const totalCount = document.getElementById("statsTotalWorkouts");
@@ -649,7 +603,7 @@
         historyFeed.innerHTML = `
           <div class="text-center py-8 text-gray-500 text-sm">
             <i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2 opacity-40"></i>
-            No logged training logs found yet.
+            No logged logs found yet.
           </div>
         `;
         totalCount.innerText = "0";
@@ -659,8 +613,6 @@
       }
 
       totalCount.innerText = data.length;
-      
-      // Calculate active week cycles (1 cycle = any count in the recommit 3-day window)
       const weekCounts = new Set(data.map(item => {
         const dt = new Date(item.timestamp);
         const startOfYear = new Date(dt.getFullYear(), 0, 1);
@@ -669,12 +621,10 @@
       }));
       streakCount.innerText = `${weekCounts.size} wk`;
 
-      // Build listing
       historyFeed.innerHTML = "";
       data.forEach(log => {
         const dateObj = new Date(log.timestamp);
         const formattedTimeStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-        
         const card = document.createElement("div");
         card.className = "bg-cardbg border border-gray-850 p-4 rounded-xl space-y-2";
         
@@ -694,10 +644,10 @@
 
         card.innerHTML = `
           <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">${log.dayName} Workout</span>
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">${log.dayName} Tracker</span>
             <span class="text-[10px] text-gray-500">${formattedTimeStr}</span>
           </div>
-          <h4 class="text-sm font-extrabold text-white">${log.workoutTitle || 'Muscle Flush Session'}</h4>
+          <h4 class="text-sm font-extrabold text-white">${log.workoutTitle || 'Activity Session'}</h4>
           <div class="space-y-1.5 pt-1">
             ${exercisesSubHTML}
           </div>
@@ -707,7 +657,6 @@
       lucide.createIcons();
     }
 
-    // PORTABLE ALERT OVERLAY TO BYPASS IFRAME BLOCKS
     function showGlobalAlert(message) {
       const modal = document.createElement("div");
       modal.className = "fixed inset-0 bg-darkbg/80 backdrop-blur-sm flex items-center justify-center p-4 z-[9999]";
@@ -724,8 +673,6 @@
       `;
       document.body.appendChild(modal);
     }
-
   </script>
 </body>
 </html>
-
