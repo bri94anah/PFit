@@ -1,741 +1,725 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PF Lift, Swim & Cardio Tracker</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        pfPurple: '#6d28d9',
-                        pfYellow: '#f59e0b',
-                    }
-                }
-            }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PF Gym & Swim Tracker</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            darkbg: '#0B0F19',
+            cardbg: '#151D30',
+            accentPurple: '#7C3AED',
+            accentPink: '#EC4899',
+            brandGreen: '#10B981'
+          }
         }
-    </script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #0B0F19;
+      color: #F3F4F6;
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0B0F19;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1F2937;
+      border-radius: 10px;
+    }
+  </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen pb-24 antialiased selection:bg-purple-500/30">
-    <div class="max-w-md mx-auto min-h-screen flex flex-col bg-slate-900 shadow-2xl relative border-x border-slate-800">
-        <!-- Header -->
-        <header class="sticky top-0 z-30 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-600 to-amber-500 flex items-center justify-center shadow-lg shadow-purple-500/20">
-                    <i data-lucide="dumbbell" class="w-5 h-5 text-white"></i>
-                </div>
-                <div>
-                    <h1 class="text-md font-bold tracking-tight text-white flex items-center gap-1">PF Gym & Swim</h1>
-                    <p class="text-[10px] text-slate-400 font-medium tracking-wide uppercase" id="app-status">Connecting to Cloud...</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-2">
-                <span id="sync-indicator" class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" title="Sync Status"></span>
-                <span class="text-xs text-slate-400 font-mono" id="current-date-badge"></span>
-            </div>
-        </header>
+<body class="min-h-screen flex flex-col pb-20">
 
-        <!-- Main Content View Area -->
-        <main class="flex-1 p-4 overflow-y-auto">
-            <!-- Cloud Diagnostics Assistant -->
-            <div id="diagnostics-box" class="bg-red-950/40 border border-red-500/30 rounded-2xl p-4 mt-2 mb-4">
-                <div class="flex items-start gap-2.5">
-                    <span class="text-red-400 mt-0.5">⚠️</span>
-                    <div>
-                        <h3 class="text-xs font-black text-red-400">Cloud Diagnostics Assistant</h3>
-                        <p id="diagnostics-msg" class="text-[11px] font-mono text-red-200 mt-1 leading-relaxed">
-                            Awaiting live database response...
-                        </p>
-                        <p class="text-[10px] font-mono text-slate-400 mt-2 border-t border-red-500/10 pt-2">
-                            Active Key in Browser: <span id="diagnostics-key" class="text-amber-400 font-bold">detecting...</span>
-                        </p>
-                        <p class="text-[9px] text-red-400/60 mt-1.5 italic">This block displays live handshake feedback from the Firebase server.</p>
-                    </div>
-                </div>
-            </div>
+  <!-- TOP HEADER -->
+  <header class="border-b border-gray-800 bg-darkbg/80 backdrop-blur-md sticky top-0 z-50 px-4 py-3">
+    <div class="max-w-md mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-accentPurple to-accentPink flex items-center justify-center shadow-lg shadow-accentPurple/20">
+          <i data-lucide="dumbbell" class="w-5 h-5 text-white"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-base leading-tight">PF Gym &amp; Swim</h1>
+          <div class="flex items-center gap-2">
+            <span id="connectionBadge" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-blue-900/40 text-blue-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-blue-400 mr-1.5 animate-pulse"></span>
+              Connecting...
+            </span>
+            <span class="text-xs text-gray-400">v2.1-Schedule</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Date & Time Indicator -->
+      <div class="text-right">
+        <span class="text-xs text-gray-400 block" id="currentDateStr">Saturday - Jul 18</span>
+        <span id="headerTimeBadge" class="text-[10px] text-accentPink font-semibold bg-pink-950/40 px-2 py-0.5 rounded-full border border-pink-900/30">Late Night (11PM)</span>
+      </div>
+    </div>
+  </header>
 
-            <!-- Toast Notifications Area -->
-            <div id="toast-box" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-300 opacity-0 transform translate-y-2">
-                <div class="bg-slate-800 text-white border border-slate-700 px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-2 text-xs font-semibold">
-                    <span id="toast-icon"></span>
-                    <span id="toast-message">Logged!</span>
-                </div>
-            </div>
+  <!-- MOTIVATIONAL TOP BANNER -->
+  <section class="px-4 pt-4 max-w-md mx-auto w-full">
+    <div class="bg-gradient-to-r from-purple-950/40 to-blue-950/40 border border-purple-900/30 rounded-2xl p-4 flex items-start gap-3">
+      <div class="text-2xl mt-0.5">🌟</div>
+      <div>
+        <h4 class="text-sm font-bold text-purple-200">Recommitment Phase: Week 1</h4>
+        <p class="text-xs text-purple-300 mt-1 leading-relaxed">
+          Welcome back! We scaled down your workouts to 2-3 manageable days. Take each rep slow and focus on controlled tension. You've got this!
+        </p>
+      </div>
+    </div>
+  </section>
 
-            <!-- TAB 1: TODAY'S WORKOUT VIEW -->
-            <section id="view-workout" class="space-y-4">
-                <div class="flex gap-1.5 overflow-x-auto pb-1 no-scrollbar">
-                    <button onclick="selectDay('Monday')" class="day-btn shrink-0 text-xs px-3.5 py-2 rounded-xl font-bold transition-all border border-slate-800 bg-slate-950 text-slate-400">Mon</button>
-                    <button onclick="selectDay('Tuesday')" class="day-btn shrink-0 text-xs px-3.5 py-2 rounded-xl font-bold transition-all border border-slate-800 bg-slate-950 text-slate-400">Tue</button>
-                    <button onclick="selectDay('Wednesday')" class="day-btn shrink-0 text-xs px-3.5 py-2 rounded-xl font-bold transition-all border border-slate-800 bg-slate-950 text-slate-400">Wed</button>
-                    <button onclick="selectDay('Thursday')" class="day-btn shrink-0 text-xs px-3.5 py-2 rounded-xl font-bold transition-all border border-slate-800 bg-slate-950 text-slate-400">Thu</button>
-                    <button onclick="selectDay('Friday')" class="day-btn shrink-0 text-xs px-3.5 py-2 rounded-xl font-bold transition-all border border-slate-800 bg-slate-950 text-slate-400">Fri</button>
-                    <button onclick="selectDay('Saturday')" class="day-btn shrink-0 text-xs px-3.5 py-2 rounded-xl font-bold transition-all border border-slate-800 bg-slate-950 text-slate-400">Sat</button>
-                    <button onclick="selectDay('Sunday')" class="day-btn shrink-0 text-xs px-3.5 py-2 rounded-xl font-bold transition-all border border-slate-800 bg-slate-950 text-slate-400">Sun</button>
-                </div>
-
-                <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-800 p-4 relative overflow-hidden">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <span class="text-[9px] font-extrabold uppercase tracking-widest text-purple-400 px-2 py-0.5 bg-purple-50/10 rounded-md" id="workout-category">Push Day</span>
-                            <h2 class="text-xl font-black text-white mt-1" id="workout-day-title">Monday Workout</h2>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-xs text-slate-400 font-medium" id="workout-target-summary">Chest, Shoulders, Triceps</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="exercise-list-container" class="space-y-4"></div>
-
-                <div class="pt-2">
-                    <button onclick="submitWorkoutSession()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-purple-600/15 flex items-center justify-center gap-2 transition-all duration-150 active:scale-98">
-                        <i data-lucide="check-circle-2" class="w-5 h-5"></i>
-                        Finish & Save Session
-                    </button>
-                </div>
-            </section>
-
-            <!-- TAB 2: HISTORY & PROGRESS VIEW -->
-            <section id="view-history" class="space-y-4 hidden">
-                <div class="bg-slate-800/50 rounded-2xl p-4 border border-slate-800">
-                    <h2 class="text-lg font-extrabold text-white flex items-center gap-2">
-                        <i data-lucide="trending-up" class="w-5 h-5 text-amber-400"></i>
-                        Strength Trends
-                    </h2>
-                    <p class="text-xs text-slate-400 mt-0.5">Select any machine to view your logged weights over time.</p>
-                    <select id="exercise-trend-select" onchange="renderTrendChart()" class="w-full mt-3 bg-slate-950 border border-slate-800 text-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold focus:border-purple-500 focus:outline-none"></select>
-                    <div class="mt-4 h-40 bg-slate-950 rounded-xl border border-slate-800 p-2 flex flex-col justify-between relative">
-                        <div id="chart-no-data" class="absolute inset-0 flex items-center justify-center bg-slate-950/80 rounded-xl text-xs text-slate-500">
-                            No logs found yet. Start saving sessions!
-                        </div>
-                        <svg id="trend-svg" class="w-full h-full p-2" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
-                        <div class="flex justify-between text-[8px] text-slate-500 px-1 font-mono">
-                            <span id="chart-start-date">First Log</span>
-                            <span id="chart-end-date">Latest Log</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="space-y-3">
-                    <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                        <i data-lucide="calendar" class="w-4 h-4"></i>
-                        Past Sessions
-                    </h3>
-                    <div id="history-logs-container" class="space-y-3"></div>
-                </div>
-            </section>
-
-            <!-- TAB 3: GUIDE VIEW -->
-            <section id="view-guide" class="space-y-4 hidden">
-                <div class="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-800 rounded-2xl p-4">
-                    <h2 class="text-lg font-black text-white flex items-center gap-2">
-                        <i data-lucide="help-circle" class="w-5 h-5 text-purple-400"></i>
-                        PF Machine Reference
-                    </h2>
-                    <p class="text-xs text-slate-300 mt-1">Quick tips to master your weight progression safely on the gym floor.</p>
-                </div>
-                <div class="space-y-3">
-                    <div class="bg-slate-800/40 p-4 border border-slate-800 rounded-xl">
-                        <h3 class="text-xs font-bold text-amber-400 flex items-center gap-1">
-                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                            The "Half-Weight" Dial Hook
-                        </h3>
-                        <p class="text-xs text-slate-400 mt-1 leading-relaxed">
-                            Most machine stacks at Planet Fitness have standard jumps of 10 lbs or 15 lbs. On the top of the stack, look for a small slider, selector dial, or a tiny add-on plate. These are **micro-adjusters of 2.5 lbs or 5 lbs**. Always use these to make tiny, joint-friendly increments!
-                        </p>
-                    </div>
-                    <div class="bg-slate-800/40 p-4 border border-slate-800 rounded-xl">
-                        <h3 class="text-xs font-bold text-purple-400 flex items-center gap-1">
-                            <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
-                            The Double Progression Rule
-                        </h3>
-                        <p class="text-xs text-slate-400 mt-1 leading-relaxed">
-                            Master your *reps* before touching the weight. If an exercise is scheduled for **8–12 reps**, do not increase the weight until you can easily complete **all 12 reps on all 3 sets** with perfect form. Once you achieve this, add the smallest weight increment, and drop back down to 8 reps.
-                        </p>
-                    </div>
-                    <div class="bg-slate-800/40 p-4 border border-slate-800 rounded-xl">
-                        <h3 class="text-xs font-bold text-blue-400 flex items-center gap-1">
-                            <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
-                            Recommended Safe Increases
-                        </h3>
-                        <div class="grid grid-cols-2 gap-2 mt-2">
-                            <div class="bg-slate-950 p-2 rounded-lg border border-slate-800">
-                                <span class="text-[10px] text-slate-500 uppercase font-bold block">Leg Machines</span>
-                                <span class="text-xs font-black text-slate-200">Add 5 to 10 lbs</span>
-                            </div>
-                            <div class="bg-slate-950 p-2 rounded-lg border border-slate-800">
-                                <span class="text-[10px] text-slate-500 uppercase font-bold block">Chest & Back</span>
-                                <span class="text-xs font-black text-slate-200">Add 5 lbs</span>
-                            </div>
-                            <div class="bg-slate-950 p-2 rounded-lg border border-slate-800">
-                                <span class="text-[10px] text-slate-500 uppercase font-bold block">Shoulders & Arms</span>
-                                <span class="text-xs font-black text-slate-200">Add 2.5 lbs (Cables)</span>
-                            </div>
-                            <div class="bg-slate-950 p-2 rounded-lg border border-slate-800">
-                                <span class="text-[10px] text-slate-500 uppercase font-bold block">Dumbbell Weights</span>
-                                <span class="text-xs font-black text-slate-200">Aim for 15 reps first</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <!-- Navigation Tabs -->
-        <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-slate-950 border-t border-slate-850 px-6 py-2 flex justify-between items-center z-40">
-            <button onclick="switchTab('workout')" id="nav-workout" class="flex flex-col items-center gap-1 text-purple-400 transition-colors py-1 px-3">
-                <i data-lucide="dumbbell" class="w-5 h-5"></i>
-                <span class="text-[10px] font-bold">Lifting Day</span>
-            </button>
-            <button onclick="switchTab('history')" id="nav-history" class="flex flex-col items-center gap-1 text-slate-500 transition-colors py-1 px-3">
-                <i data-lucide="trending-up" class="w-5 h-5"></i>
-                <span class="text-[10px] font-bold">Trends & Logs</span>
-            </button>
-            <button onclick="switchTab('guide')" id="nav-guide" class="flex flex-col items-center gap-1 text-slate-500 transition-colors py-1 px-3">
-                <i data-lucide="help-circle" class="w-5 h-5"></i>
-                <span class="text-[10px] font-bold">PF Guide</span>
-            </button>
-        </nav>
+  <!-- MAIN APP CONTAINER -->
+  <main class="flex-1 px-4 py-4 max-w-md mx-auto w-full space-y-5">
+    
+    <!-- WEEKDAY NAVIGATOR -->
+    <div class="bg-cardbg border border-gray-800 rounded-2xl p-2 flex justify-between gap-1">
+      <button onclick="switchDay('Monday')" id="btn-Monday" class="flex-1 py-2 text-xs font-bold rounded-xl transition duration-150 flex flex-col items-center gap-1">
+        <span>Mon</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-accentPurple"></span>
+      </button>
+      <button onclick="switchDay('Tuesday')" id="btn-Tuesday" class="flex-1 py-2 text-xs font-bold rounded-xl transition duration-150 flex flex-col items-center gap-1">
+        <span>Tue</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-accentPink"></span>
+      </button>
+      <button onclick="switchDay('Wednesday')" id="btn-Wednesday" class="flex-1 py-2 text-xs font-bold text-gray-400 rounded-xl transition duration-150 flex flex-col items-center gap-1">
+        <span>Wed</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-gray-700"></span>
+      </button>
+      <button onclick="switchDay('Thursday')" id="btn-Thursday" class="flex-1 py-2 text-xs font-bold rounded-xl transition duration-150 flex flex-col items-center gap-1">
+        <span>Thu</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-accentPurple"></span>
+      </button>
+      <button onclick="switchDay('Friday')" id="btn-Friday" class="flex-1 py-2 text-xs font-bold text-gray-400 rounded-xl transition duration-150 flex flex-col items-center gap-1">
+        <span>Fri</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-gray-700"></span>
+      </button>
+      <button onclick="switchDay('Saturday')" id="btn-Saturday" class="flex-1 py-2 text-xs font-bold text-gray-400 rounded-xl transition duration-150 flex flex-col items-center gap-1">
+        <span>Sat</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-gray-700"></span>
+      </button>
+      <button onclick="switchDay('Sunday')" id="btn-Sunday" class="flex-1 py-2 text-xs font-bold text-gray-400 rounded-xl transition duration-150 flex flex-col items-center gap-1">
+        <span>Sun</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-gray-700"></span>
+      </button>
     </div>
 
-    <!-- UNIFIED APPLICATION JS MODULE -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    <!-- WORKOUT CONTAINER VIEW -->
+    <div id="tab-workout" class="space-y-4">
+      <div id="dayHeaderBlock" class="bg-gradient-to-r from-cardbg to-slate-900 border border-gray-800 rounded-2xl p-5">
+        <div class="flex items-center justify-between">
+          <span id="dayTypeBadge" class="text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full bg-accentPurple/20 text-accentPurple border border-accentPurple/30">
+            Lifting Day
+          </span>
+          <span id="timeSlotLabel" class="text-xs text-gray-400 flex items-center gap-1">
+            <i data-lucide="clock" class="w-3.5 h-3.5 text-accentPink"></i> 
+            11:00 PM Slot
+          </span>
+        </div>
+        <h2 id="dayTitle" class="text-xl font-extrabold mt-3 tracking-tight">Monday: Upper Body</h2>
+        <p id="daySubtitle" class="text-xs text-gray-400 mt-1 leading-relaxed">Beginner muscle re-activation. Focus purely on slow, smooth form.</p>
+      </div>
 
-        const workoutProgram = {
-            Monday: {
-                title: "Monday: Push Day",
-                category: "Lifting",
-                target: "Chest, Shoulders, Triceps",
-                exercises: [
-                    { name: "Briana: Seated Bike Warmup", target: "15 Mins (Easy Pace)", sets: 1, isCardio: true },
-                    { name: "Ryan: Seated Elliptical Warmup", target: "15 Mins (Comfortable Pace)", sets: 1, isCardio: true },
-                    { name: "Dumbbell Chest Press", target: "3 Sets x 8 - 10 Reps", sets: 3 },
-                    { name: "Seated DB Shoulder Press", target: "3 Sets x 10 - 12 Reps", sets: 3 },
-                    { name: "Machine Chest Fly (Pec Dec)", target: "3 Sets x 12 Reps", sets: 3 },
-                    { name: "Dumbbell Lateral Raises", target: "3 Sets x 12 - 15 Reps", sets: 3 },
-                    { name: "Tricep Rope Pushdowns", target: "3 Sets x 12 Reps", sets: 3 }
-                ]
-            },
-            Tuesday: {
-                title: "Tuesday: Pull Day",
-                category: "Lifting",
-                target: "Back, Rear Delts, Biceps",
-                exercises: [
-                    { name: "Briana: Seated Bike Warmup", target: "15 Mins (Easy Pace)", sets: 1, isCardio: true },
-                    { name: "Ryan: Seated Elliptical Warmup", target: "15 Mins (Comfortable Pace)", sets: 1, isCardio: true },
-                    { name: "Lat Pulldowns (Wide Grip)", target: "4 Sets x 8 - 10 Reps", sets: 4 },
-                    { name: "Seated Cable Rows", target: "3 Sets x 12 Reps", sets: 3 },
-                    { name: "Lat Pulldowns (Underhand)", target: "3 Sets x 12 Reps", sets: 3 },
-                    { name: "Face Pulls (Rear Delts)", target: "3 Sets x 15 Reps", sets: 3 },
-                    { name: "Dumbbell Bicep Curls", target: "3 Sets x 10 - 12 Reps", sets: 3 }
-                ]
-            },
-            Wednesday: {
-                title: "Wednesday: Swim Day",
-                category: "Swim",
-                target: "Zero-Impact Active Recovery",
-                exercises: [
-                    { name: "Leisurely Rec Swim", target: "20 to 30 Mins (Easy Laps)", sets: 1, isSwim: true }
-                ]
-            },
-            Thursday: {
-                title: "Thursday: Leg Day",
-                category: "Lifting",
-                target: "Quads, Hamstrings, Glutes",
-                exercises: [
-                    { name: "Smith Machine Squats", target: "3 Sets x 8 - 10 Reps (Keep spine straight)", sets: 3 },
-                    { name: "Leg Press Machine", target: "3 Sets x 8 - 10 Reps", sets: 3 },
-                    { name: "Romanian Deadlifts (Dumbbell)", target: "3 Sets x 10 Reps", sets: 3 },
-                    { name: "Seated/Lying Leg Curl Machine", target: "3 Sets x 8 - 10 Reps", sets: 3 },
-                    { name: "Machine Hip Abductor (Outer)", target: "3 Sets x 10 - 12 Reps", sets: 3 },
-                    { name: "Machine Hip Adductor (Inner)", target: "3 Sets x 10 - 12 Reps (Thigh & Hip Core)", sets: 3 },
-                    { name: "Standing Glute Kickback Machine", target: "3 Sets x 8 - 10 Reps (Lean Forward Profile)", sets: 3 },
-                    { name: "Calf Press (On Leg Press)", target: "3 Sets x 12 Reps", sets: 3 }
-                ]
-            },
-            Friday: {
-                title: "Friday: Core & Arms",
-                category: "Lifting",
-                target: "Abs, Obliques, Arms",
-                exercises: [
-                    { name: "Hammer Curls (Dumbbell)", target: "3 Sets x 10 - 12 Reps", sets: 3 },
-                    { name: "Overhead Tricep Extension (DB)", target: "3 Sets x 12 Reps", sets: 3 },
-                    { name: "Seated Ab Crunch Machine", target: "3 Sets x 12 - 15 Reps", sets: 3 },
-                    { name: "Seated Torso Rotation Machine", target: "3 Sets x 12 - 15 Reps", sets: 3 },
-                    { name: "Briana: Elliptical Finisher", target: "15 Mins (Moderate)", sets: 1, isCardio: true },
-                    { name: "Ryan: Seated Elliptical Finisher", target: "15 Mins (Moderate)", sets: 1, isCardio: true }
-                ]
-            },
-            Saturday: {
-                title: "Saturday: Swim Day",
-                category: "Swim",
-                target: "Leg Soreness Flush Recovery",
-                exercises: [
-                    { name: "Leisurely Rec Swim", target: "20 to 30 Mins (Easy Laps)", sets: 1, isSwim: true }
-                ]
-            },
-            Sunday: {
-                title: "Sunday: Swim Day",
-                category: "Swim",
-                target: "Joint & Spine Decompression",
-                exercises: [
-                    { name: "Leisurely Rec Swim", target: "20 to 30 Mins (Easy Laps)", sets: 1, isSwim: true }
-                ]
-            }
-        };
+      <!-- Exercises List Injection -->
+      <div id="exerciseList" class="space-y-4">
+        <!-- JS generates these cards -->
+      </div>
 
-        let currentDay = "Monday";
-        let activeTab = "workout";
-        let db, auth, appId, userId;
-        let isFirebaseReady = false;
-        let localWorkoutHistory = [];
+      <!-- Action Footer -->
+      <div class="pt-2">
+        <button onclick="saveActiveSession()" id="saveSessionBtn" class="w-full bg-gradient-to-r from-accentPurple to-accentPink hover:opacity-95 text-white font-bold py-4 px-6 rounded-2xl shadow-lg shadow-accentPurple/25 flex items-center justify-center gap-2 transition duration-200">
+          <i data-lucide="check-circle" class="w-5 h-5"></i>
+          Finish &amp; Save Session
+        </button>
+      </div>
+    </div>
 
-        // Correct Verified Firebase Credentials Configuration with lowercase "l"
-        const __firebase_config = {
-            apiKey: "AIzaSyBcf-6zE7Ly10ZKhlwRAZUtowuc24W8nQU",
-            authDomain: "pfit-d3269.firebaseapp.com",
-            projectId: "pfit-d3269",
-            storageBucket: "pfit-d3269.firebasestorage.app",
-            messagingSenderId: "100984802554",
-            appId: "1:100984802554:web:2d7206cefe14bb5a9b0d43"
-        };
+    <!-- LOGS / TRENDS CONTAINER VIEW -->
+    <div id="tab-logs" class="hidden space-y-4">
+      <div class="bg-cardbg border border-gray-800 rounded-2xl p-5">
+        <h3 class="text-lg font-bold">Cloud Training History</h3>
+        <p class="text-xs text-gray-400 mt-1">Real-time sync from your Google Cloud repository.</p>
+        
+        <div class="grid grid-cols-2 gap-4 mt-5">
+          <div class="bg-slate-950/40 border border-gray-800 p-4 rounded-xl text-center">
+            <span class="text-[10px] uppercase font-bold text-gray-500 block">Total Workouts</span>
+            <span id="statsTotalWorkouts" class="text-2xl font-black mt-1 block">0</span>
+          </div>
+          <div class="bg-slate-950/40 border border-gray-800 p-4 rounded-xl text-center">
+            <span class="text-[10px] uppercase font-bold text-gray-500 block">Current Streak</span>
+            <span id="statsStreak" class="text-2xl font-black mt-1 block text-brandGreen">0 wk</span>
+          </div>
+        </div>
+      </div>
 
-        // Window Handshake Initializer
-        window.addEventListener('DOMContentLoaded', async () => {
-            lucide.createIcons();
-            setCurrentDateBadge();
-            detectAndSetCurrentDay();
-            renderSelectedWorkout();
+      <!-- Workout History Feed -->
+      <div class="space-y-3" id="historyFeed">
+        <div class="text-center py-8 text-gray-500 text-sm">
+          <i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2 opacity-40"></i>
+          No Cloud sessions found yet.
+        </div>
+      </div>
+    </div>
+
+    <!-- GUIDE VIEWER -->
+    <div id="tab-guide" class="hidden space-y-4">
+      <div class="bg-cardbg border border-gray-800 rounded-2xl p-5 space-y-4">
+        <h3 class="text-lg font-bold">Recommitment Tempo Guide</h3>
+        <p class="text-xs text-gray-400 leading-relaxed">
+          Because you've rested for two weeks, your nervous system is re-adapting. 
+          Use **Slow Controlled Tension** rather than heavy loads to avoid excessive next-day soreness.
+        </p>
+
+        <div class="bg-slate-950/40 border border-gray-850 p-4 rounded-xl space-y-3">
+          <h4 class="text-sm font-bold text-accentPink flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-accentPink"></span>
+            The 3 - 1 - 1 tempo system:
+          </h4>
+          <ul class="space-y-2 text-xs text-gray-300 pl-4 list-disc">
+            <li><strong>3s Descent:</strong> Lower the barbell/stack down counting 1, 2, 3 slowly.</li>
+            <li><strong>1s Pause:</strong> Active contraction hold at the bottom of the movement.</li>
+            <li><strong>1s Lift:</strong> Exhale and push the weight up smoothly.</li>
+          </ul>
+        </div>
+
+        <div class="bg-slate-950/40 border border-gray-850 p-4 rounded-xl space-y-2">
+          <h4 class="text-sm font-bold text-brandGreen">🔥 Late-Night &amp; Pool Safety:</h4>
+          <p class="text-xs text-gray-300 leading-relaxed">
+            Mondays &amp; Thursdays are late-night lifting sessions (11:00 PM). Ensure you stay hydrated. <br><br>
+            On **Tuesdays**, plan to head out early—your community pool gates lock automatically at **9:00 PM** (the pool facility closes completely at 10:00 PM). 
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- NAVIGATION TABS -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-darkbg/95 border-t border-gray-800/80 backdrop-blur-md py-2.5 z-50">
+    <div class="max-w-md mx-auto flex items-center justify-around text-center">
+      <button onclick="switchTab('workout')" id="nav-workout" class="flex-1 text-accentPurple flex flex-col items-center gap-1">
+        <i data-lucide="dumbbell" class="w-5 h-5"></i>
+        <span class="text-[10px] font-semibold">Lifting Day</span>
+      </button>
+      <button onclick="switchTab('logs')" id="nav-logs" class="flex-1 text-gray-400 flex flex-col items-center gap-1 hover:text-gray-200">
+        <i data-lucide="line-chart" class="w-5 h-5"></i>
+        <span class="text-[10px] font-semibold">Trends &amp; Logs</span>
+      </button>
+      <button onclick="switchTab('guide')" id="nav-guide" class="flex-1 text-gray-400 flex flex-col items-center gap-1 hover:text-gray-200">
+        <i data-lucide="help-circle" class="w-5 h-5"></i>
+        <span class="text-[10px] font-semibold">PF Guide</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- FIREBASE SCRIPTS -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDocs, collection, query, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // EXPORTS TO GLOBAL SCOPE FOR ACTIONS
+    window.switchDay = switchDay;
+    window.switchTab = switchTab;
+    window.saveActiveSession = saveActiveSession;
+    window.toggleExerciseDone = toggleExerciseDone;
+
+    // DEFINING OUR RECOMMIT PROGRAM WORKOUTS
+    const recommitWorkouts = {
+      Monday: {
+        type: "Lifting Day",
+        title: "Monday: Upper Body Re-Intro",
+        subtitle: "Gentle muscular conditioning targeting upper pull and push mechanics.",
+        isRest: false,
+        exercises: [
+          { name: "Assisted Lat Pulldown", target: "3 sets of 10 reps (Slow controlled focus)", inputs: ["Weight (lbs)"], icon: "arrow-down-to-line", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo" },
+          { name: "Dumbbell Flat Bench Press", target: "3 sets of 12 reps (Focus on bottom chest stretch)", inputs: ["Weight (lbs)"], icon: "shield", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo" },
+          { name: "Seated Cable Row", target: "3 sets of 10 reps (Hold peak squeeze 1s)", inputs: ["Weight (lbs)"], icon: "shuffle", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo" },
+          { name: "Core Plank Hold", target: "3 sets of 30-45 seconds", inputs: ["Time (secs)"], icon: "clock", values: ["", ""], isDone: false, tempo: "Steady breathing" }
+        ]
+      },
+      Tuesday: {
+        type: "Swim Day",
+        title: "Tuesday: Recovery & Core Flush",
+        subtitle: "Active joint movement to flush out Monday's stiffness.",
+        isRest: false,
+        exercises: [
+          { name: "Leisurely Rec Swim", target: "20 to 30 mins (Smooth continuous laps)", inputs: ["Mins swam"], icon: "waves", values: ["", ""], isDone: false, tempo: "⏰ Must arrive before 9:00 PM — Pool gates lock at 9!" },
+          { name: "Full-Body Static Stretching", target: "15 mins focusing on chest, hips, & hamstrings", inputs: ["Done (yes/no)"], icon: "activity", values: ["", ""], isDone: false, tempo: "Gentle static recovery holds" }
+        ]
+      },
+      Wednesday: {
+        type: "Rest Day",
+        title: "Wednesday: Rest & Muscle Repair",
+        subtitle: "Focus on sleep and physical recovery. No heavy movements.",
+        isRest: true,
+        exercises: []
+      },
+      Thursday: {
+        type: "Lifting Day",
+        title: "Thursday: Smith Machine Squat & Leg Day",
+        subtitle: "Targeting quads, glutes, and calves. Control the descent to avoid sore knees.",
+        isRest: false,
+        exercises: [
+          { name: "Smith Machine Squats", target: "3 sets of 10 reps (Feet slightly forward)", inputs: ["Weight (lbs)"], icon: "dumbbell", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo: 3s down, pause, push!" },
+          { name: "Standing Glute Kickbacks", target: "3 sets of 12 reps each side (Mind-muscle squeeze)", inputs: ["Weight (lbs)"], icon: "sparkles", values: ["", ""], isDone: false, tempo: "1s Hold at peak squeeze" },
+          { name: "Seated Calf Raises", target: "3 sets of 15 reps (Full range ankle motion)", inputs: ["Weight (lbs)"], icon: "footprints", values: ["", ""], isDone: false, tempo: "3s eccentric stretch" }
+        ]
+      },
+      Friday: {
+        type: "Rest Day",
+        title: "Friday: Active Rest Interval",
+        subtitle: "Deep structural breathing and light walking to end the week.",
+        isRest: true,
+        exercises: []
+      },
+      Saturday: {
+        type: "Rest Day",
+        title: "Saturday: Weekend Active Recovery",
+        subtitle: "Optimal day for deep joint hydration, hydration, and long walks.",
+        isRest: true,
+        exercises: []
+      },
+      Sunday: {
+        type: "Rest Day",
+        title: "Sunday: Prep & Relaxation",
+        subtitle: "Unwind your central nervous system to dominate the Monday block.",
+        isRest: true,
+        exercises: []
+      }
+    };
+
+    // SYSTEM LOCAL STORAGE BACKUP STATE
+    let currentDay = "Monday";
+    let activeTab = "workout";
+    let activeProgram = JSON.parse(JSON.stringify(recommitWorkouts));
+    
+    // FIREBASE DATABASE HOOKS
+    let db, auth;
+    let appId = "default-pfit-app";
+    let user = null;
+
+    // KEY VERIFIED IN LOWERCASE 'l' handshake
+    const __firebase_config = {
+      apiKey: "AIzaSyBcf-6zE7Ly10ZKhlwRAZUtowuc24W8nQU",
+      authDomain: "pfit-d3269.firebaseapp.com",
+      projectId: "pfit-d3269",
+      storageBucket: "pfit-d3269.firebasestorage.app",
+      messagingSenderId: "100984802554",
+      appId: "1:100984802554:web:2d7206cefe14bb5a9b0d43"
+    };
+
+    // START ON DOCUMENT LOADED
+    window.addEventListener('DOMContentLoaded', async () => {
+      // Setup current visual days
+      setCurrentDayOnPageLoad();
+      updateNavigationUI();
+      renderSelectedDay();
+
+      // Initiate Firebase Auth
+      try {
+        const app = initializeApp(__firebase_config);
+        auth = getAuth(app);
+        db = getFirestore(app);
+        
+        const badge = document.getElementById("connectionBadge");
+        
+        await signInAnonymously(auth);
+        
+        onAuthStateChanged(auth, (currentUser) => {
+          if (currentUser) {
+            user = currentUser;
+            badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span> Connected (Cloud)`;
+            badge.className = "inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-emerald-950/40 text-emerald-300 border border-emerald-900/30";
             
-            // Print key directly to Diagnostics Box to confirm browser load state
-            const keyLabel = document.getElementById('diagnostics-key');
-            if (keyLabel) {
-                keyLabel.innerText = __firebase_config.apiKey;
-            }
+            // Begin monitoring training database logs
+            syncHistoryData();
+          }
+        });
+      } catch (err) {
+        console.error("Firebase Auth failed: ", err);
+        const badge = document.getElementById("connectionBadge");
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5"></span> Local Mode`;
+        badge.className = "inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-amber-950/40 text-amber-300 border border-amber-900/30";
+      }
+    });
 
-            await initFirebase();
+    // DETERMINE ACTIVE CALENDAR DAY
+    function setCurrentDayOnPageLoad() {
+      const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const dateObj = new Date();
+      const localizedName = days[dateObj.getDay()];
+      
+      // Auto assign if valid day config exists
+      if (recommitWorkouts[localizedName]) {
+        currentDay = localizedName;
+      }
+      
+      const formattedDate = dateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+      document.getElementById("currentDateStr").innerText = formattedDate;
+    }
+
+    // SWITCH TABS INTERFACE
+    function switchTab(tabId) {
+      activeTab = tabId;
+      
+      // Update UI Tabs Styling
+      const tabGroup = ["workout", "logs", "guide"];
+      tabGroup.forEach(id => {
+        const el = document.getElementById(`tab-${id}`);
+        const navEl = document.getElementById(`nav-${id}`);
+        if (id === tabId) {
+          el.classList.remove("hidden");
+          navEl.classList.remove("text-gray-400");
+          navEl.classList.add("text-accentPurple");
+        } else {
+          el.classList.add("hidden");
+          navEl.classList.add("text-gray-400");
+          navEl.classList.remove("text-accentPurple");
+        }
+      });
+    }
+
+    // SWITCH CALENDAR TRACKING DAY
+    function switchDay(dayName) {
+      currentDay = dayName;
+      updateNavigationUI();
+      renderSelectedDay();
+    }
+
+    // REDRAW DAY VIEW BASED ON WORKOUT TYPE
+    function updateNavigationUI() {
+      const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+      days.forEach(day => {
+        const button = document.getElementById(`btn-${day}`);
+        if (day === currentDay) {
+          button.className = "flex-1 py-2 text-xs font-bold bg-accentPurple text-white rounded-xl shadow-lg transition duration-150 flex flex-col items-center gap-1";
+          // If rest day, apply neutral grey active color
+          if (recommitWorkouts[day].isRest) {
+            button.className = "flex-1 py-2 text-xs font-bold bg-slate-800 text-gray-300 rounded-xl transition duration-150 flex flex-col items-center gap-1";
+          }
+        } else {
+          button.className = "flex-1 py-2 text-xs font-bold text-gray-400 hover:text-gray-200 rounded-xl transition duration-150 flex flex-col items-center gap-1";
+        }
+      });
+    }
+
+    // RENDER SELECTED DAY WITH DYNAMIC TIMESLOT MONITOR
+    function renderSelectedDay() {
+      const workout = activeProgram[currentDay];
+      const headerBlock = document.getElementById("dayHeaderBlock");
+      const dayTypeBadge = document.getElementById("dayTypeBadge");
+      const dayTitle = document.getElementById("dayTitle");
+      const daySubtitle = document.getElementById("daySubtitle");
+      const listContainer = document.getElementById("exerciseList");
+      const saveBtn = document.getElementById("saveSessionBtn");
+      
+      const timeSlotLabel = document.getElementById("timeSlotLabel");
+      const headerTimeBadge = document.getElementById("headerTimeBadge");
+
+      // Dynamic Header & Time Badge Settings (Adaptive Pool Schedule Guardrail)
+      if (currentDay === "Tuesday") {
+        timeSlotLabel.innerHTML = `<i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-accentPink"></i> Before 9:00 PM Slot`;
+        headerTimeBadge.innerText = "Before 9 PM (Locks!)";
+        headerTimeBadge.className = "text-[10px] text-accentPink font-black bg-pink-950/50 px-2 py-0.5 rounded-full border border-accentPink/40 animate-pulse";
+      } else if (currentDay === "Monday" || currentDay === "Thursday") {
+        timeSlotLabel.innerHTML = `<i data-lucide="clock" class="w-3.5 h-3.5 text-accentPurple"></i> 11:00 PM Slot`;
+        headerTimeBadge.innerText = "Late Night (11PM)";
+        headerTimeBadge.className = "text-[10px] text-accentPurple font-semibold bg-purple-950/40 px-2 py-0.5 rounded-full border border-purple-900/30";
+      } else {
+        timeSlotLabel.innerHTML = `<i data-lucide="coffee" class="w-3.5 h-3.5 text-gray-500"></i> Active Recovery`;
+        headerTimeBadge.innerText = "Rest/Recovery";
+        headerTimeBadge.className = "text-[10px] text-gray-400 font-semibold bg-slate-900 px-2 py-0.5 rounded-full border border-gray-800";
+      }
+
+      // Set titles
+      dayTitle.innerText = workout.title;
+      daySubtitle.innerText = workout.subtitle;
+      dayTypeBadge.innerText = workout.type;
+
+      // Adjust header color gradients depending on day type
+      if (workout.isRest) {
+        headerBlock.className = "bg-gradient-to-r from-cardbg to-slate-950 border border-gray-800 rounded-2xl p-5 opacity-75";
+        dayTypeBadge.className = "text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700";
+        listContainer.innerHTML = `
+          <div class="bg-cardbg border border-gray-850 p-6 rounded-2xl text-center space-y-3">
+            <div class="text-4xl">😴</div>
+            <h4 class="font-bold text-sm">Active Muscular Rest Day</h4>
+            <p class="text-xs text-gray-400 max-w-xs mx-auto leading-relaxed">
+              Your body is actively remodeling and storing fuel. Aim for healthy sleep, light mobility walking, and keep your hydration levels high!
+            </p>
+          </div>
+        `;
+        saveBtn.classList.add("hidden");
+      } else {
+        saveBtn.classList.remove("hidden");
+        headerBlock.className = "bg-gradient-to-r from-cardbg to-slate-900 border border-gray-800 rounded-2xl p-5";
+        
+        if (workout.type === "Swim Day") {
+          dayTypeBadge.className = "text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full bg-accentPink/20 text-accentPink border border-accentPink/30";
+        } else {
+          dayTypeBadge.className = "text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full bg-accentPurple/20 text-accentPurple border border-accentPurple/30";
+        }
+
+        // Build exercise nodes
+        listContainer.innerHTML = "";
+        workout.exercises.forEach((ex, idx) => {
+          const card = document.createElement("div");
+          card.className = `p-4 rounded-2xl border transition duration-150 ${ex.isDone ? 'bg-slate-900/60 border-emerald-900/40 text-gray-300' : 'bg-cardbg border-gray-850 text-white'}`;
+          
+          let inputHTML = "";
+          ex.inputs.forEach((inputName, inputIdx) => {
+            const currentVal = ex.values[inputIdx] || "";
+            inputHTML += `
+              <div class="flex-1 min-w-[100px]">
+                <label class="text-[10px] uppercase tracking-wider font-semibold text-gray-500 block mb-1">${inputName}</label>
+                <input 
+                  type="text" 
+                  value="${currentVal}"
+                  placeholder="Set ${idx+1}"
+                  oninput="updateInputVal('${currentDay}', ${idx}, ${inputIdx}, this.value)"
+                  class="w-full bg-slate-950 border border-gray-800 focus:border-accentPurple rounded-lg py-1.5 px-3 text-xs text-white placeholder-gray-700 outline-none transition"
+                />
+              </div>
+            `;
+          });
+
+          card.innerHTML = `
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg ${ex.isDone ? 'bg-emerald-950/40 text-emerald-400' : 'bg-slate-950 text-accentPurple'} flex items-center justify-center">
+                  <i data-lucide="${ex.icon || 'dumbbell'}" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold tracking-tight">${ex.name}</h4>
+                  <p class="text-[11px] text-gray-400 mt-0.5">${ex.target}</p>
+                </div>
+              </div>
+              <button 
+                onclick="toggleExerciseDone('${currentDay}', ${idx})" 
+                class="px-3 py-1.5 text-[10px] font-bold rounded-lg transition ${ex.isDone ? 'bg-emerald-900/20 border border-emerald-800/40 text-emerald-400' : 'bg-slate-950 border border-gray-800 text-gray-400 hover:text-white'}"
+              >
+                ${ex.isDone ? 'Done' : 'Mark Done'}
+              </button>
+            </div>
+
+            <!-- Tempo Cues & Safety Cues -->
+            ${ex.tempo ? `
+              <div class="mt-3 py-1 px-2 rounded-lg bg-purple-950/20 border border-purple-900/25 flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-accentPurple animate-pulse"></span>
+                <span class="text-[10px] font-semibold text-accentPink">${ex.tempo}</span>
+              </div>
+            ` : ''}
+
+            <!-- Inputs Set Section -->
+            <div class="mt-4 flex gap-3 flex-wrap">
+              ${inputHTML}
+            </div>
+          `;
+          listContainer.appendChild(card);
+        });
+      }
+      lucide.createIcons();
+    }
+
+    // INTERNAL CHANGE VALUE TRACKER
+    window.updateInputVal = function(dayName, exIdx, inputIdx, val) {
+      activeProgram[dayName].exercises[exIdx].values[inputIdx] = val;
+    };
+
+    // MARK DONE
+    function toggleExerciseDone(dayName, exIdx) {
+      activeProgram[dayName].exercises[exIdx].isDone = !activeProgram[dayName].exercises[exIdx].isDone;
+      renderSelectedDay();
+    }
+
+    // SAVE INTERFACE WRITER TO FIRESTORE
+    async function saveActiveSession() {
+      const workout = activeProgram[currentDay];
+      const itemsToLog = workout.exercises.filter(ex => ex.isDone);
+      
+      if (itemsToLog.length === 0) {
+        showGlobalAlert("No exercises marked done! Click 'Mark Done' on exercises you completed before saving.");
+        return;
+      }
+
+      // Format clean payload
+      const timestamp = Date.now();
+      const cleanData = {
+        dayName: currentDay,
+        workoutTitle: workout.title,
+        timestamp: timestamp,
+        createdAt: new Date().toISOString(),
+        exercisesLogged: itemsToLog.map(ex => ({
+          name: ex.name,
+          stats: ex.inputs.reduce((acc, inputName, idx) => {
+            acc[inputName] = ex.values[idx] || "Completed";
+            return acc;
+          }, {})
+        }))
+      };
+
+      if (!user) {
+        showGlobalAlert("Saving session locally only. Connect to the Internet to sync with the cloud database.");
+        saveLocalLog(cleanData);
+        return;
+      }
+
+      try {
+        const docId = `log-${timestamp}`;
+        const ref = doc(db, 'artifacts', appId, 'public', 'data', 'workoutLogs', docId);
+        
+        await setDoc(ref, cleanData);
+        showGlobalAlert(`🎉 Workout saved to Cloud! Recommitment Complete for ${currentDay}.`);
+        
+        // Reset inputs visual state
+        activeProgram[currentDay] = JSON.parse(JSON.stringify(recommitWorkouts[currentDay]));
+        renderSelectedDay();
+      } catch (err) {
+        console.error("Firestore database write failed: ", err);
+        showGlobalAlert(`Write Error: ${err.message}. Retrying via local memory cache.`);
+        saveLocalLog(cleanData);
+      }
+    }
+
+    // LOCAL STORAGE CACHE BACKUP
+    function saveLocalLog(cleanData) {
+      let currentCache = JSON.parse(localStorage.getItem('pfit_local_logs') || '[]');
+      currentCache.unshift(cleanData);
+      localStorage.setItem('pfit_local_logs', JSON.stringify(currentCache));
+      renderHistoryUI(currentCache);
+    }
+
+    // MONITOR REALTIME GRAPH LOGS FROM CLOUD
+    function syncHistoryData() {
+      if (!user) return;
+      const ref = collection(db, 'artifacts', appId, 'public', 'data', 'workoutLogs');
+      
+      // Simple collection monitoring obeying Rule 2 (no ordering/complex constraints on listener)
+      onSnapshot(ref, (snap) => {
+        const cloudData = [];
+        snap.forEach(doc => {
+          cloudData.push(doc.data());
+        });
+        
+        // Sort safely inside javascript memory
+        cloudData.sort((a,b) => b.timestamp - a.timestamp);
+        renderHistoryUI(cloudData);
+      }, (err) => {
+        console.error("onSnapshot sync error: ", err);
+      });
+    }
+
+    // POPULATE HISTORICAL TIMELINE
+    function renderHistoryUI(data) {
+      const historyFeed = document.getElementById("historyFeed");
+      const totalCount = document.getElementById("statsTotalWorkouts");
+      const streakCount = document.getElementById("statsStreak");
+
+      if (!data || data.length === 0) {
+        historyFeed.innerHTML = `
+          <div class="text-center py-8 text-gray-500 text-sm">
+            <i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2 opacity-40"></i>
+            No logged training logs found yet.
+          </div>
+        `;
+        totalCount.innerText = "0";
+        streakCount.innerText = "0 wk";
+        lucide.createIcons();
+        return;
+      }
+
+      totalCount.innerText = data.length;
+      
+      // Calculate active week cycles (1 cycle = any count in the recommit 3-day window)
+      const weekCounts = new Set(data.map(item => {
+        const dt = new Date(item.timestamp);
+        const startOfYear = new Date(dt.getFullYear(), 0, 1);
+        const pastDaysOfYear = (dt - startOfYear) / 86400000;
+        return Math.ceil((pastDaysOfYear + startOfYear.getDay() + 1) / 7);
+      }));
+      streakCount.innerText = `${weekCounts.size} wk`;
+
+      // Build listing
+      historyFeed.innerHTML = "";
+      data.forEach(log => {
+        const dateObj = new Date(log.timestamp);
+        const formattedTimeStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        
+        const card = document.createElement("div");
+        card.className = "bg-cardbg border border-gray-850 p-4 rounded-xl space-y-2";
+        
+        let exercisesSubHTML = "";
+        log.exercisesLogged.forEach(ex => {
+          const statText = Object.entries(ex.stats).map(([k,v]) => `${v}`).join(', ');
+          exercisesSubHTML += `
+            <div class="flex items-center justify-between text-xs py-1 border-b border-gray-900/40">
+              <span class="text-gray-300 font-semibold flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-accentPink"></span>
+                ${ex.name}
+              </span>
+              <span class="text-accentPurple font-black bg-slate-950 px-2 py-0.5 rounded">${statText}</span>
+            </div>
+          `;
         });
 
-        async function initFirebase() {
-            const statusText = document.getElementById('app-status');
-            const syncDot = document.getElementById('sync-indicator');
-            const debugPanel = document.getElementById('diagnostics-msg');
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">${log.dayName} Workout</span>
+            <span class="text-[10px] text-gray-500">${formattedTimeStr}</span>
+          </div>
+          <h4 class="text-sm font-extrabold text-white">${log.workoutTitle || 'Muscle Flush Session'}</h4>
+          <div class="space-y-1.5 pt-1">
+            ${exercisesSubHTML}
+          </div>
+        `;
+        historyFeed.appendChild(card);
+      });
+      lucide.createIcons();
+    }
 
-            try {
-                const app = initializeApp(__firebase_config);
-                auth = getAuth(app);
-                db = getFirestore(app);
-                appId = 'pf-workout-tracker-default';
+    // PORTABLE ALERT OVERLAY TO BYPASS IFRAME BLOCKS
+    function showGlobalAlert(message) {
+      const modal = document.createElement("div");
+      modal.className = "fixed inset-0 bg-darkbg/80 backdrop-blur-sm flex items-center justify-center p-4 z-[9999]";
+      modal.innerHTML = `
+        <div class="bg-cardbg border border-gray-800 p-6 rounded-2xl max-w-sm w-full text-center space-y-4">
+          <div class="w-12 h-12 bg-accentPurple/20 text-accentPurple rounded-full flex items-center justify-center mx-auto text-xl">
+            💪
+          </div>
+          <p class="text-sm text-gray-200 leading-relaxed font-semibold">${message}</p>
+          <button onclick="this.closest('.fixed').remove()" class="w-full bg-accentPurple hover:bg-accentPurple/90 text-white font-bold py-2.5 rounded-xl transition text-xs">
+            Awesome, Got it
+          </button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
 
-                await signInAnonymously(auth);
-
-                onAuthStateChanged(auth, async (user) => {
-                    if (user) {
-                        userId = user.uid;
-                        isFirebaseReady = true;
-                        statusText.innerText = `Connected (Cloud)`;
-                        syncDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-500 animate-none";
-                        
-                        // Hide diagnostics on successful handshake
-                        const dBox = document.getElementById('diagnostics-box');
-                        if (dBox) dBox.classList.add('hidden');
-                        
-                        await fetchCloudHistory();
-                    }
-                });
-            } catch (err) {
-                console.error("Handshake fail:", err);
-                statusText.innerText = "Offline Mode (Backup)";
-                syncDot.className = "w-2.5 h-2.5 rounded-full bg-blue-500 animate-none";
-                
-                if (debugPanel) {
-                    debugPanel.innerText = `${err.name}: ${err.message}`;
-                    debugPanel.classList.add('text-red-400', 'font-bold');
-                }
-                loadOfflineHistory();
-            }
-        }
-
-        function setCurrentDateBadge() {
-            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            const d = new Date();
-            const badge = document.getElementById('current-date-badge');
-            badge.innerText = `${days[d.getDay()]} - ${months[d.getMonth()]} ${d.getDate()}`;
-        }
-
-        function detectAndSetCurrentDay() {
-            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            currentDay = days[new Date().getDay()];
-            updateDaySelectorHighlight();
-        }
-
-        window.switchTab = function(tabName) {
-            activeTab = tabName;
-            document.getElementById('view-workout').classList.add('hidden');
-            document.getElementById('view-history').classList.add('hidden');
-            document.getElementById('view-guide').classList.add('hidden');
-            document.getElementById(`view-${tabName}`).classList.remove('hidden');
-
-            ['workout', 'history', 'guide'].forEach(t => {
-                const navBtn = document.getElementById(`nav-${t}`);
-                navBtn.className = t === tabName 
-                    ? "flex flex-col items-center gap-1 text-purple-400 transition-colors py-1 px-3"
-                    : "flex flex-col items-center gap-1 text-slate-500 transition-colors py-1 px-3";
-            });
-
-            if (tabName === 'history') {
-                populateTrendDropdown();
-                renderTrendChart();
-            }
-        }
-
-        window.selectDay = function(dayName) {
-            currentDay = dayName;
-            updateDaySelectorHighlight();
-            renderSelectedWorkout();
-        }
-
-        function updateDaySelectorHighlight() {
-            const btns = document.querySelectorAll('.day-btn');
-            const dayAbbrs = { Monday: "Mon", Tuesday: "Tue", Wednesday: "Wed", Thursday: "Thu", Friday: "Fri", Saturday: "Sat", Sunday: "Sun" };
-            btns.forEach(btn => {
-                btn.className = btn.innerText === dayAbbrs[currentDay]
-                    ? "day-btn shrink-0 text-xs px-3.5 py-2 rounded-xl font-black transition-all border border-purple-500/30 bg-purple-600/20 text-purple-300"
-                    : "day-btn shrink-0 text-xs px-3.5 py-2 rounded-xl font-bold transition-all border border-slate-800 bg-slate-950 text-slate-400";
-            });
-        }
-
-        function renderSelectedWorkout() {
-            const data = workoutProgram[currentDay];
-            const listContainer = document.getElementById('exercise-list-container');
-            document.getElementById('workout-day-title').innerText = data.title;
-            document.getElementById('workout-category').innerText = data.category + " Day";
-            document.getElementById('workout-target-summary').innerText = data.target;
-
-            document.getElementById('workout-category').className = data.category === 'Swim'
-                ? "text-[9px] font-extrabold uppercase tracking-widest text-sky-400 px-2 py-0.5 bg-sky-500/10 rounded-md"
-                : "text-[9px] font-extrabold uppercase tracking-widest text-purple-400 px-2 py-0.5 bg-purple-500/10 rounded-md";
-
-            listContainer.innerHTML = '';
-            data.exercises.forEach((ex, exIdx) => {
-                let cardHTML = '';
-                if (ex.isSwim) {
-                    cardHTML = `
-                        <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-4 flex flex-col justify-between" id="ex-${exIdx}">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h4 class="font-black text-slate-200 text-sm">${ex.name}</h4>
-                                    <span class="text-[10px] text-sky-400 font-semibold uppercase tracking-wide mt-1 block">${ex.target}</span>
-                                </div>
-                                <span class="text-[9px] font-bold text-slate-500 border border-slate-800 rounded px-1.5 py-0.5 uppercase">Pool</span>
-                            </div>
-                            <div class="mt-4 pt-3 border-t border-slate-900 flex justify-between items-center">
-                                <input type="number" id="swim-input-mins" placeholder="Mins swam" class="w-28 bg-slate-900 border border-slate-800 text-xs py-2 px-3 rounded-lg text-slate-200 focus:border-sky-500 focus:outline-none">
-                                <button onclick="markSwimReady(this)" class="bg-sky-600/20 text-sky-400 border border-sky-500/30 font-bold text-xs py-2 px-4 rounded-xl transition-all hover:bg-sky-600/30">Set Done</button>
-                            </div>
-                        </div>`;
-                } else if (ex.isCardio) {
-                    cardHTML = `
-                        <div class="bg-slate-950 border border-amber-600/20 rounded-2xl p-4 flex flex-col justify-between" id="ex-${exIdx}">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h4 class="font-black text-amber-400 text-sm">${ex.name}</h4>
-                                    <span class="text-[10px] text-slate-400 font-semibold uppercase tracking-wide mt-1 block">${ex.target}</span>
-                                </div>
-                                <span class="text-[9px] font-bold text-amber-500 border border-amber-600/30 bg-amber-500/10 rounded px-1.5 py-0.5 uppercase">Cardio</span>
-                            </div>
-                            <div class="mt-4 pt-3 border-t border-slate-900 flex justify-between items-center">
-                                <span class="text-[10px] text-slate-500 font-mono">Complete session?</span>
-                                <button onclick="toggleCardioReady(this, ${exIdx})" class="bg-amber-600/10 text-amber-400 border border-amber-500/30 font-bold text-xs py-1.5 px-4 rounded-xl transition-all hover:bg-amber-600/20">Mark Done</button>
-                            </div>
-                        </div>`;
-                } else {
-                    let setButtonsHTML = '';
-                    for (let s = 1; s <= ex.sets; s++) {
-                        setButtonsHTML += `
-                            <button onclick="toggleCardSet(this, ${exIdx}, ${s})" class="set-checker-btn w-10 h-10 rounded-full border border-slate-800 text-xs font-black flex items-center justify-center transition-all bg-slate-900 text-slate-400 hover:border-purple-500/40">${s}</button>`;
-                    }
-                    cardHTML = `
-                        <div class="bg-slate-950 border border-slate-850 rounded-2xl p-4 space-y-3" id="ex-${exIdx}">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h4 class="font-extrabold text-slate-100 text-sm leading-tight">${ex.name}</h4>
-                                    <span class="text-[10px] text-slate-400 font-medium tracking-wide block mt-1">${ex.target}</span>
-                                </div>
-                                <span class="text-[9px] font-extrabold text-slate-500 border border-slate-850 bg-slate-900/60 rounded px-1.5 py-0.5 uppercase">Machine</span>
-                            </div>
-                            <div class="flex gap-2 items-center bg-slate-900/40 p-2 rounded-xl border border-slate-850/50">
-                                <div class="flex-1">
-                                    <label class="text-[9px] uppercase font-bold text-slate-500 block">Weight (lbs)</label>
-                                    <input type="number" id="ex-weight-${exIdx}" placeholder="Weight" class="w-full bg-slate-950 border border-slate-800 text-xs py-1.5 px-2 rounded-md text-slate-200 focus:border-purple-500 focus:outline-none font-bold">
-                                </div>
-                                <div class="flex-1">
-                                    <label class="text-[9px] uppercase font-bold text-slate-500 block">Reps Logged</label>
-                                    <input type="number" id="ex-reps-${exIdx}" placeholder="Reps" class="w-full bg-slate-950 border border-slate-800 text-xs py-1.5 px-2 rounded-md text-slate-200 focus:border-purple-500 focus:outline-none font-bold">
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-2 pt-1.5">
-                                <span class="text-[9px] font-black uppercase text-slate-500 tracking-wider">Sets:</span>
-                                <div class="flex gap-1.5 ml-1">${setButtonsHTML}</div>
-                            </div>
-                        </div>`;
-                }
-                listContainer.insertAdjacentHTML('beforeend', cardHTML);
-            });
-            lucide.createIcons();
-        }
-
-        window.toggleCardSet = function(btn, exIdx, setNum) {
-            btn.classList.toggle('bg-slate-900');
-            btn.classList.toggle('text-slate-400');
-            btn.classList.toggle('border-slate-800');
-            btn.classList.toggle('bg-emerald-600/20');
-            btn.classList.toggle('text-emerald-400');
-            btn.classList.toggle('border-emerald-500/40');
-            btn.classList.add('scale-95');
-            setTimeout(() => btn.classList.remove('scale-95'), 100);
-        }
-
-        window.toggleCardioReady = function(btn, exIdx) {
-            btn.classList.toggle('bg-amber-600/10');
-            btn.classList.toggle('text-amber-400');
-            btn.classList.toggle('border-amber-500/30');
-            btn.classList.toggle('bg-emerald-600/20');
-            btn.classList.toggle('text-emerald-400');
-            btn.classList.toggle('border-emerald-500/40');
-            
-            if (btn.innerText === "Mark Done") {
-                btn.innerText = "Done ✓";
-                showToast("Cardio marked complete!", "success");
-            } else {
-                btn.innerText = "Mark Done";
-            }
-        }
-
-        window.markSwimReady = function(btn) {
-            const input = document.getElementById('swim-input-mins');
-            if (!input.value) {
-                showToast("Enter minutes swam first", "error");
-                return;
-            }
-            btn.innerText = "Done ✓";
-            btn.className = "bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 font-bold text-xs py-2 px-4 rounded-xl";
-            showToast("Swim log stored!", "success");
-        }
-
-        window.submitWorkoutSession = async function() {
-            const currentWorkout = workoutProgram[currentDay];
-            const submission = {
-                date: new Date().toISOString().split('T')[0],
-                timestamp: Date.now(),
-                day: currentDay,
-                workoutType: currentWorkout.title,
-                category: currentWorkout.category,
-                exercises: []
-            };
-            let validationPassed = false;
-
-            currentWorkout.exercises.forEach((ex, idx) => {
-                if (ex.isSwim) {
-                    const mins = document.getElementById('swim-input-mins').value;
-                    if (mins) {
-                        submission.exercises.push({ name: ex.name, weight: 0, reps: parseInt(mins), completedSets: 1 });
-                        validationPassed = true;
-                    }
-                } else if (ex.isCardio) {
-                    const cardioBtn = document.querySelector(`#ex-${idx} button`);
-                    if (cardioBtn && cardioBtn.innerText === "Done ✓") {
-                        const minutesVal = parseInt(ex.target) || 10;
-                        submission.exercises.push({ name: ex.name, weight: 0, reps: minutesVal, completedSets: 1 });
-                        validationPassed = true;
-                    }
-                } else {
-                    const weightVal = document.getElementById(`ex-weight-${idx}`).value;
-                    const repsVal = document.getElementById(`ex-reps-${idx}`).value;
-                    const activeSetElements = document.querySelectorAll(`#ex-${idx} .set-checker-btn`);
-                    let completedSetCount = 0;
-                    activeSetElements.forEach(btn => {
-                        if (btn.classList.contains('bg-emerald-600/20')) completedSetCount++;
-                    });
-
-                    if (weightVal && repsVal && completedSetCount > 0) {
-                        submission.exercises.push({
-                            name: ex.name,
-                            weight: parseFloat(weightVal),
-                            reps: parseInt(repsVal),
-                            completedSets: completedSetCount
-                        });
-                        validationPassed = true;
-                    }
-                }
-            });
-
-            if (!validationPassed) {
-                showToast("Log at least 1 item to submit!", "error");
-                return;
-            }
-
-            if (isFirebaseReady) {
-                try {
-                    const path = collection(db, 'artifacts', appId, 'users', userId, 'workout_logs');
-                    await addDoc(path, submission);
-                    showToast("Workout Saved to Cloud!", "success");
-                    await fetchCloudHistory();
-                } catch (err) {
-                    console.error(err);
-                    saveBackupLocal(submission);
-                }
-            } else {
-                saveBackupLocal(submission);
-            }
-            clearWorkoutFields();
-        }
-
-        function clearWorkoutFields() {
-            renderSelectedWorkout();
-        }
-
-        function saveBackupLocal(log) {
-            const localHist = JSON.parse(localStorage.getItem('pf_backup_logs') || '[]');
-            localHist.push(log);
-            localStorage.setItem('pf_backup_logs', JSON.stringify(localHist));
-            localWorkoutHistory = localHist;
-            showToast("Saved Locally!", "success");
-            renderHistoryLogs();
-        }
-
-        function loadOfflineHistory() {
-            localWorkoutHistory = JSON.parse(localStorage.getItem('pf_backup_logs') || '[]');
-            renderHistoryLogs();
-        }
-
-        async function fetchCloudHistory() {
-            try {
-                const path = collection(db, 'artifacts', appId, 'users', userId, 'workout_logs');
-                const snapshot = await getDocs(path);
-                const list = [];
-                snapshot.forEach(doc => list.push(doc.data()));
-                list.sort((a, b) => b.timestamp - a.timestamp);
-                localWorkoutHistory = list;
-                renderHistoryLogs();
-            } catch (err) {
-                console.error(err);
-                loadOfflineHistory();
-            }
-        }
-
-        function borderClassAndTags(log) {
-             if (log.category === 'Swim') {
-                 return { logColor: 'border-sky-500/20 bg-sky-950/10', tagColor: 'text-sky-400 bg-sky-500/10' };
-             }
-             return { logColor: 'border-slate-800 bg-slate-950/40', tagColor: 'text-purple-400 bg-purple-500/10' };
-        }
-
-        function renderHistoryLogs() {
-            const container = document.getElementById('history-logs-container');
-            if (localWorkoutHistory.length === 0) {
-                container.innerHTML = `<div class="p-8 text-center text-xs text-slate-500 border border-dashed border-slate-800 rounded-xl">No logs saved yet.</div>`;
-                return;
-            }
-            container.innerHTML = '';
-            localWorkoutHistory.forEach((log) => {
-                const formattedDate = new Date(log.timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
-                let exercisesListHTML = '';
-                log.exercises.forEach(ex => {
-                    if (log.category === 'Swim') {
-                         exercisesListHTML += `<div class="flex justify-between text-xs text-slate-300"><span>${ex.name}</span><span class="font-bold text-sky-400">${ex.reps} Mins</span></div>`;
-                    } else if (ex.name.includes("Warmup") || ex.name.includes("Finisher")) {
-                         exercisesListHTML += `<div class="flex justify-between text-xs text-slate-300"><span>${ex.name}</span><span class="font-bold text-amber-400">${ex.reps} Mins Total</span></div>`;
-                    } else {
-                         exercisesListHTML += `<div class="flex justify-between text-xs text-slate-300"><span>${ex.name}</span><span class="font-mono text-slate-400"><strong class="text-white">${ex.weight} lbs</strong> &bull; ${ex.reps} Reps (${ex.completedSets} sets)</span></div>`;
-                    }
-                });
-
-                const themes = borderClassAndTags(log);
-                const logColor = themes.logColor;
-                const tagColor = themes.tagColor;
-
-                const logHTML = `
-                    <div class="p-4 rounded-xl border ${logColor} space-y-2">
-                        <div class="flex justify-between items-center pb-1 border-b border-slate-800">
-                            <div><h4 class="text-xs font-black text-slate-100">${log.day} Session</h4><span class="text-[10px] text-slate-400 font-mono">${formattedDate}</span></div>
-                            <span class="text-[9px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wide ${tagColor}">${log.category}</span>
-                        </div>
-                        <div class="space-y-2 pt-1">${exercisesListHTML}</div>
-                    </div>`;
-                container.insertAdjacentHTML('beforeend', logHTML);
-            });
-        }
-
-        function populateTrendDropdown() {
-            const select = document.getElementById('exercise-trend-select');
-            const uniqueExercises = new Set();
-            Object.keys(workoutProgram).forEach(day => {
-                workoutProgram[day].exercises.forEach(ex => { if (!ex.isSwim && !ex.isCardio) uniqueExercises.add(ex.name); });
-            });
-            select.innerHTML = '';
-            uniqueExercises.forEach(exName => {
-                const opt = document.createElement('option');
-                opt.value = exName; opt.innerText = exName; select.appendChild(opt);
-            });
-        }
-
-        window.renderTrendChart = function() {
-            const exName = document.getElementById('exercise-trend-select').value;
-            const trendData = [];
-            localWorkoutHistory.forEach(log => {
-                log.exercises.forEach(ex => { if (ex.name === exName && ex.weight > 0) trendData.push({ timestamp: log.timestamp, weight: ex.weight }); });
-            });
-
-            const noDataBanner = document.getElementById('chart-no-data');
-            const svg = document.getElementById('trend-svg');
-
-            if (trendData.length < 2) {
-                noDataBanner.classList.remove('hidden'); svg.innerHTML = ''; return;
-            }
-            noDataBanner.classList.add('hidden');
-            trendData.sort((a,b) => a.timestamp - b.timestamp);
-
-            const weights = trendData.map(d => d.weight);
-            const maxWeight = Math.max(...weights);
-            const minWeight = Math.min(...weights);
-            const range = maxWeight - minWeight === 0 ? 10 : (maxWeight - minWeight);
-
-            const points = trendData.map((d, i) => {
-                const x = (i / (trendData.length - 1)) * 100;
-                const y = 90 - ((d.weight - minWeight) / range) * 80;
-                return `${x},${y}`;
-            });
-
-            document.getElementById('chart-start-date').innerText = new Date(trendData[0].timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
-            document.getElementById('chart-end-date').innerText = new Date(trendData[trendData.length-1].timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
-
-            svg.innerHTML = `
-                <polyline fill="none" stroke="#6d28d9" stroke-width="2.5" points="${points.join(' ')}" />
-                ${points.map((p, i) => {
-                    const coords = p.split(',');
-                    return `<circle cx="${coords[0]}" cy="${coords[1]}" r="2" fill="#fbbf24" /><text x="${coords[0]}" y="${coords[1] - 4}" fill="#e2e8f0" font-size="6" text-anchor="middle">${trendData[i].weight}</text>`;
-                }).join('')}`;
-        }
-
-        function showToast(msg, type = "success") {
-            const box = document.getElementById('toast-box');
-            const messageSpan = document.getElementById('toast-message');
-            const iconSpan = document.getElementById('toast-icon');
-            messageSpan.innerText = msg;
-            iconSpan.innerHTML = type === "success" ? '✓' : '⚠️';
-            box.className = "fixed bottom-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-300 opacity-100 transform translate-y-0";
-            setTimeout(() => { box.className = "fixed bottom-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-300 opacity-0 transform translate-y-2"; }, 3000);
-        }
-    </script>
+  </script>
 </body>
 </html>
