@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PF Gym & Swim Tracker</title>
+  <title>PF Gym Tracker</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -61,13 +61,13 @@
           <i data-lucide="dumbbell" class="w-5 h-5 text-white"></i>
         </div>
         <div>
-          <h1 class="font-bold text-base leading-tight">PF Gym &amp; Swim</h1>
+          <h1 class="font-bold text-base leading-tight">PF Gym Tracker</h1>
           <div class="flex items-center gap-2">
             <span id="connectionBadge" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-blue-900/40 text-blue-300">
               <span class="w-1.5 h-1.5 rounded-full bg-blue-400 mr-1.5 animate-pulse"></span>
               Connecting...
             </span>
-            <span class="text-xs text-gray-400">v2.2-Machines</span>
+            <span class="text-xs text-gray-400">v2.3-Hybrid</span>
           </div>
         </div>
       </div>
@@ -75,7 +75,7 @@
       <!-- Date & Time Indicator -->
       <div class="text-right">
         <span class="text-xs text-gray-400 block" id="currentDateStr">Saturday - Jul 18</span>
-        <span id="headerTimeBadge" class="text-[10px] text-accentPink font-semibold bg-pink-950/40 px-2 py-0.5 rounded-full border border-pink-900/30">Late Night (11PM)</span>
+        <span id="headerTimeBadge" class="text-[10px] text-accentPink font-semibold bg-pink-950/40 px-2 py-0.5 rounded-full border border-pink-900/30">Lifting Session</span>
       </div>
     </div>
   </header>
@@ -85,9 +85,9 @@
     <div class="bg-gradient-to-r from-purple-950/40 to-blue-950/40 border border-purple-900/30 rounded-2xl p-4 flex items-start gap-3">
       <div class="text-2xl mt-0.5">💪</div>
       <div>
-        <h4 class="text-sm font-bold text-purple-200">Bastrop PF Machine Program</h4>
+        <h4 class="text-sm font-bold text-purple-200">Bastrop PF Machine & Free Weight Program</h4>
         <p class="text-xs text-purple-300 mt-1 leading-relaxed">
-          Recommitment Phase: 100% Machine-Guided. No bodyweight stress, no joint strain, just smooth selectorized tension.
+          Recommitment Phase: Monday, Tuesday, & Thursday lifting split utilizing high-stability machines and isolated free weights.
         </p>
       </div>
     </div>
@@ -137,7 +137,7 @@
           </span>
           <span id="timeSlotLabel" class="text-xs text-gray-400 flex items-center gap-1">
             <i data-lucide="clock" class="w-3.5 h-3.5 text-accentPink"></i> 
-            11:00 PM Slot
+            Scheduled Session
           </span>
         </div>
         <h2 id="dayTitle" class="text-xl font-extrabold mt-3 tracking-tight">Monday: Upper Body</h2>
@@ -207,10 +207,9 @@
         </div>
 
         <div class="bg-slate-950/40 border border-gray-850 p-4 rounded-xl space-y-2">
-          <h4 class="text-sm font-bold text-brandGreen">🔥 Late-Night &amp; Pool Safety:</h4>
+          <h4 class="text-sm font-bold text-brandGreen">🔥 Gym Strategy:</h4>
           <p class="text-xs text-gray-300 leading-relaxed">
-            Mondays &amp; Thursdays are late-night lifting sessions (11:00 PM). Ensure you stay hydrated. <br><br>
-            On **Tuesdays**, plan to head out early—your community pool gates lock automatically at **9:00 PM** (the pool facility closes completely at 10:00 PM). 
+            Mondays, Tuesdays &amp; Thursdays are focused lifting blocks. Stick to the machine tracking guidelines to maximize stability while building your core free-weight foundations.
           </p>
         </div>
       </div>
@@ -248,7 +247,7 @@
     window.saveActiveSession = saveActiveSession;
     window.toggleExerciseDone = toggleExerciseDone;
 
-    // DEFINING OUR RECOMMIT PROGRAM WORKOUTS - 100% PF BASTROP MACHINE FOCUS
+    // DEFINING OUR RECOMMIT PROGRAM WORKOUTS - 100% PF BASTROP MACHINE & FREE WEIGHT FOCUS
     const recommitWorkouts = {
       Monday: {
         type: "Lifting Day",
@@ -263,13 +262,15 @@
         ]
       },
       Tuesday: {
-        type: "Swim Day",
-        title: "Tuesday: Recovery & Pool Support",
-        subtitle: "Active joint movement to flush out Monday's upper body stiffness.",
+        type: "Lifting Day",
+        title: "Tuesday: Arms & Core Isolation",
+        subtitle: "Using Planet Fitness selectorized pulley tracks and standalone free-weight dumbbell tracks.",
         isRest: false,
         exercises: [
-          { name: "Leisurely Rec Swim", target: "20 to 30 mins (Smooth continuous laps)", inputs: ["Mins swam"], icon: "waves", values: ["", ""], isDone: false, tempo: "⏰ Arrive before 9:00 PM — Pool gates lock at 9!" },
-          { name: "Pool Wall Supported stretches", target: "15 mins of chest expansion and calf lengthening using pool edge", inputs: ["Done (yes/no)"], icon: "activity", values: ["", ""], isDone: false, tempo: "Zero-gravity gentle static holds" }
+          { name: "Dumbbell Bicep Curls (Free Weight Track)", target: "3 sets of 12 reps each arm", inputs: ["Weight (lbs)"], icon: "dumbbell", values: ["", ""], isDone: false, tempo: "Squeeze tight at the peak of rotation" },
+          { name: "Cable Tricep Pushdowns (Pulley Machine)", target: "3 sets of 12 reps (Using rope attachment)", inputs: ["Weight (lbs)"], icon: "arrow-down", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo: Full extension at base" },
+          { name: "Seated Dumbbell Shoulder Press", target: "3 sets of 10 reps (Isolated vertical push)", inputs: ["Weight (lbs)"], icon: "shield", values: ["", ""], isDone: false, tempo: "Control descent, protect the joints" },
+          { name: "Captain's Chair Leg Raises (Bodyweight / Machine Tower)", target: "3 sets to failure (Core engagement)", inputs: ["Reps hit"], icon: "activity", values: ["", ""], isDone: false, tempo: "Control the hang, no swinging legs" }
         ]
       },
       Wednesday: {
@@ -417,7 +418,11 @@
       days.forEach(day => {
         const button = document.getElementById(`btn-${day}`);
         if (day === currentDay) {
-          button.className = "flex-1 py-2 text-xs font-bold bg-accentPurple text-white rounded-xl shadow-lg transition duration-150 flex flex-col items-center gap-1";
+          if (day === "Tuesday") {
+            button.className = "flex-1 py-2 text-xs font-bold bg-accentPink text-white rounded-xl shadow-lg transition duration-150 flex flex-col items-center gap-1";
+          } else {
+            button.className = "flex-1 py-2 text-xs font-bold bg-accentPurple text-white rounded-xl shadow-lg transition duration-150 flex flex-col items-center gap-1";
+          }
           // If rest day, apply neutral grey active color
           if (recommitWorkouts[day].isRest) {
             button.className = "flex-1 py-2 text-xs font-bold bg-slate-800 text-gray-300 rounded-xl transition duration-150 flex flex-col items-center gap-1";
@@ -441,14 +446,14 @@
       const timeSlotLabel = document.getElementById("timeSlotLabel");
       const headerTimeBadge = document.getElementById("headerTimeBadge");
 
-      // Dynamic Header & Time Badge Settings (Adaptive Pool Schedule Guardrail)
+      // Dynamic Header & Time Badge Settings
       if (currentDay === "Tuesday") {
-        timeSlotLabel.innerHTML = `<i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-accentPink"></i> Before 9:00 PM Slot`;
-        headerTimeBadge.innerText = "Before 9 PM (Locks!)";
-        headerTimeBadge.className = "text-[10px] text-accentPink font-black bg-pink-950/50 px-2 py-0.5 rounded-full border border-accentPink/40 animate-pulse";
+        timeSlotLabel.innerHTML = `<i data-lucide="clock" class="w-3.5 h-3.5 text-accentPink"></i> Hypertrophy Slot`;
+        headerTimeBadge.innerText = "Lifting Session";
+        headerTimeBadge.className = "text-[10px] text-accentPink font-black bg-pink-950/50 px-2 py-0.5 rounded-full border border-accentPink/40";
       } else if (currentDay === "Monday" || currentDay === "Thursday") {
-        timeSlotLabel.innerHTML = `<i data-lucide="clock" class="w-3.5 h-3.5 text-accentPurple"></i> 11:00 PM Slot`;
-        headerTimeBadge.innerText = "Late Night (11PM)";
+        timeSlotLabel.innerHTML = `<i data-lucide="clock" class="w-3.5 h-3.5 text-accentPurple"></i> Main Training Slot`;
+        headerTimeBadge.innerText = "Lifting Session";
         headerTimeBadge.className = "text-[10px] text-accentPurple font-semibold bg-purple-950/40 px-2 py-0.5 rounded-full border border-purple-900/30";
       } else {
         timeSlotLabel.innerHTML = `<i data-lucide="coffee" class="w-3.5 h-3.5 text-gray-500"></i> Active Recovery`;
@@ -479,7 +484,7 @@
         saveBtn.classList.remove("hidden");
         headerBlock.className = "bg-gradient-to-r from-cardbg to-slate-900 border border-gray-800 rounded-2xl p-5";
         
-        if (workout.type === "Swim Day") {
+        if (currentDay === "Tuesday") {
           dayTypeBadge.className = "text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full bg-accentPink/20 text-accentPink border border-accentPink/30";
         } else {
           dayTypeBadge.className = "text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full bg-accentPurple/20 text-accentPurple border border-accentPurple/30";
@@ -723,3 +728,4 @@
   </script>
 </body>
 </html>
+
