@@ -67,14 +67,14 @@
               <span class="w-1.5 h-1.5 rounded-full bg-blue-400 mr-1.5 animate-pulse"></span>
               Connecting...
             </span>
-            <span class="text-xs text-gray-400">v2.6-Safety</span>
+            <span class="text-xs text-gray-400">v2.8-10MinCardio</span>
           </div>
         </div>
       </div>
       
       <!-- Date & Time Indicator -->
       <div class="text-right">
-        <span class="text-xs text-gray-400 block" id="currentDateStr">Saturday - Jul 18</span>
+        <span class="text-xs text-gray-400 block" id="currentDateStr">Tuesday - Jul 21</span>
         <span id="headerTimeBadge" class="text-[10px] text-accentPink font-semibold bg-pink-950/40 px-2 py-0.5 rounded-full border border-pink-900/30">Active Tracker</span>
       </div>
     </div>
@@ -83,11 +83,11 @@
   <!-- MOTIVATIONAL TOP BANNER -->
   <section class="px-4 pt-4 max-w-md mx-auto w-full">
     <div class="bg-gradient-to-r from-purple-950/40 to-blue-950/40 border border-purple-900/30 rounded-2xl p-4 flex items-start gap-3">
-      <div class="text-2xl mt-0.5">⚖️</div>
+      <div class="text-2xl mt-0.5">👫</div>
       <div>
-        <h4 class="text-sm font-bold text-purple-200">Bastrop Structured Split</h4>
+        <h4 class="text-sm font-bold text-purple-200">Bastrop Starter Split</h4>
         <p class="text-xs text-purple-300 mt-1 leading-relaxed">
-          3 Lifting Days, 2 Swimming Recovery Days (Mind the 9 PM gate lockout!), and 2 Complete Rest Days for deep downtime.
+          Tue/Wed/Thu Lifting &amp; Light 10-Min Cardio Warm-up, Mon/Sat Swimming Recovery, Fri/Sun Full Rest.
         </p>
       </div>
     </div>
@@ -100,7 +100,7 @@
     <div class="bg-cardbg border border-gray-800 rounded-2xl p-2 flex justify-between gap-1">
       <button onclick="switchDay('Monday')" id="btn-Monday" class="flex-1 py-2 text-xs font-bold rounded-xl transition duration-150 flex flex-col items-center gap-1">
         <span>Mon</span>
-        <span class="w-1.5 h-1.5 rounded-full bg-accentPurple"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-accentPink"></span>
       </button>
       <button onclick="switchDay('Tuesday')" id="btn-Tuesday" class="flex-1 py-2 text-xs font-bold rounded-xl transition duration-150 flex flex-col items-center gap-1">
         <span>Tue</span>
@@ -108,7 +108,7 @@
       </button>
       <button onclick="switchDay('Wednesday')" id="btn-Wednesday" class="flex-1 py-2 text-xs font-bold rounded-xl transition duration-150 flex flex-col items-center gap-1">
         <span>Wed</span>
-        <span class="w-1.5 h-1.5 rounded-full bg-accentPink"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-accentPurple"></span>
       </button>
       <button onclick="switchDay('Thursday')" id="btn-Thursday" class="flex-1 py-2 text-xs font-bold rounded-xl transition duration-150 flex flex-col items-center gap-1">
         <span>Thu</span>
@@ -140,7 +140,7 @@
             Scheduled Session
           </span>
         </div>
-        <h2 id="dayTitle" class="text-xl font-extrabold mt-3 tracking-tight">Monday: Upper Body Machines</h2>
+        <h2 id="dayTitle" class="text-xl font-extrabold mt-3 tracking-tight">Tuesday: Upper Body &amp; Light Cardio</h2>
         <p id="daySubtitle" class="text-xs text-gray-400 mt-1 leading-relaxed">Beginner muscle re-activation. Focus purely on slow, smooth form.</p>
       </div>
 
@@ -190,13 +190,13 @@
       <div class="bg-cardbg border border-gray-850 rounded-2xl p-5 space-y-4">
         <h3 class="text-lg font-bold">Training &amp; Environment Guides</h3>
         <p class="text-xs text-gray-400 leading-relaxed">
-          Utilize the machine tracks to keep lines of movement fully supported. On rest days, prioritize total physical relaxation.
+          Keep cardio warmups light and smooth (10 mins max) to gently warm up joints before machine lifts or flush legs after lifting.
         </p>
 
         <div class="bg-slate-950/40 border border-gray-800 p-4 rounded-xl space-y-2">
-          <h4 class="text-sm font-bold text-brandGreen">🏊‍♀️ Facility Gate Lock Reminders (Wed &amp; Sat):</h4>
+          <h4 class="text-sm font-bold text-brandGreen">🏊‍♀️ Facility Gate Lock Reminders (Mon &amp; Sat):</h4>
           <p class="text-xs text-gray-300 leading-relaxed">
-            For swimming recovery windows on Wednesdays and Saturdays, plan carefully: the access gates lock automatically at **9:00 PM** sharp. The pool facility closes completely at **10:00 PM**.
+            For swimming recovery windows on Mondays and Saturdays, plan carefully: the access gates lock automatically at **9:00 PM** sharp. The pool facility closes completely at **10:00 PM**.
           </p>
         </div>
       </div>
@@ -237,48 +237,54 @@
     // TRACKER CALENDAR split configuration
     const recommitWorkouts = {
       Monday: {
-        type: "Lifting Day",
-        title: "Monday: Upper Body Machines",
-        subtitle: "Guided paths only. Protects rotator cuffs and stabilizes your pull/push mechanics.",
-        isRest: false,
-        exercises: [
-          { name: "Seated Chest Press Machine", target: "3 sets of 12 reps (Guided horizontal push)", inputs: ["Weight (lbs)"], icon: "shield", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo: 3s lowering stretch" },
-          { name: "Assisted Lat Pulldown Machine", target: "3 sets of 10 reps (Slow controlled focus)", inputs: ["Weight (lbs)"], icon: "arrow-down-to-line", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo: Feel the lats stretch" },
-          { name: "Seated Row Machine", target: "3 sets of 10 reps (Hold peak squeeze 1s at chest)", inputs: ["Weight (lbs)"], icon: "shuffle", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo: Pin shoulder blades" },
-          { name: "Seated Abdominal Crunch Machine", target: "3 sets of 15 reps (Fully supported spine core burn)", inputs: ["Weight (lbs)"], icon: "refresh-cw", values: ["", ""], isDone: false, tempo: "2s contraction hold at bottom" }
-        ]
-      },
-      Tuesday: {
-        type: "Lifting Day",
-        title: "Tuesday: Arms & Core Isolation",
-        subtitle: "Using Planet Fitness selectorized pulley tracks and isolated free-weight structures.",
-        isRest: false,
-        exercises: [
-          { name: "Dumbbell Bicep Curls (Free Weight Track)", target: "3 sets of 12 reps each arm", inputs: ["Weight (lbs)"], icon: "dumbbell", values: ["", ""], isDone: false, tempo: "Squeeze tight at the peak of rotation" },
-          { name: "Cable Tricep Pushdowns (Pulley Machine)", target: "3 sets of 12 reps (Using rope attachment)", inputs: ["Weight (lbs)"], icon: "arrow-down", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo: Full extension at base" },
-          { name: "Seated Dumbbell Shoulder Press", target: "3 sets of 10 reps (Isolated vertical push)", inputs: ["Weight (lbs)"], icon: "shield", values: ["", ""], isDone: false, tempo: "Control descent, protect the joints" },
-          { name: "Captain's Chair Leg Raises (Core Tower)", target: "3 sets to failure (Core engagement)", inputs: ["Reps hit"], icon: "activity", values: ["", ""], isDone: false, tempo: "Control the hang, no swinging legs" }
-        ]
-      },
-      Wednesday: {
         type: "Swim Day",
-        title: "Wednesday: Mid-Week Recovery Swim",
-        subtitle: "Active zero-gravity pool movements to flush out muscle stiffness from lifting days.",
+        title: "Monday: Early Week Recovery Swim",
+        subtitle: "Active zero-gravity pool movements to flush out muscle stiffness.",
         isRest: false,
         exercises: [
           { name: "Leisurely Recovery Swim", target: "20 to 30 mins (Smooth continuous laps)", inputs: ["Mins swam"], icon: "waves", values: ["", ""], isDone: false, tempo: "⏰ Gate Locks: 9:00 PM | Pool Closes: 10:00 PM" },
           { name: "Pool Edge Decompression Stretches", target: "10-15 mins of chest expansions and torso rotations", inputs: ["Done (yes/no)"], icon: "activity", values: ["", ""], isDone: false, tempo: "Low-gravity gentle static alignment" }
         ]
       },
+      Tuesday: {
+        type: "Lifting Day",
+        title: "Tuesday: Upper Body Machines & Cardio",
+        subtitle: "Guided paths only for rotator cuff safety, followed by personalized light cardio.",
+        isRest: false,
+        exercises: [
+          { name: "Seated Chest Press Machine", target: "3 sets of 12 reps (Guided horizontal push)", inputs: ["Weight (lbs)"], icon: "shield", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo: 3s lowering stretch" },
+          { name: "Assisted Lat Pulldown Machine", target: "3 sets of 10 reps (Slow controlled focus)", inputs: ["Weight (lbs)"], icon: "arrow-down-to-line", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo: Feel the lats stretch" },
+          { name: "Seated Row Machine", target: "3 sets of 10 reps (Hold peak squeeze 1s at chest)", inputs: ["Weight (lbs)"], icon: "shuffle", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo: Pin shoulder blades" },
+          { name: "Seated Abdominal Crunch Machine", target: "3 sets of 15 reps (Fully supported spine core burn)", inputs: ["Weight (lbs)"], icon: "refresh-cw", values: ["", ""], isDone: false, tempo: "2s contraction hold at bottom" },
+          { name: "Light Cardio - Treadmill or Upright Bike (Briana)", target: "10 mins (Gentle warm/flush pace)", inputs: ["Mins", "Speed/Level"], icon: "heart-pulse", values: ["", ""], isDone: false, tempo: "Easy baseline pace to start off" },
+          { name: "Light Cardio - Seated Elliptical (Ryan)", target: "10 mins (Smooth low-impact stride)", inputs: ["Mins", "Level"], icon: "activity", values: ["", ""], isDone: false, tempo: "Low resistance joint activation" }
+        ]
+      },
+      Wednesday: {
+        type: "Lifting Day",
+        title: "Wednesday: Arms & Core Isolation & Cardio",
+        subtitle: "Using Planet Fitness selectorized pulley tracks and isolated free-weight structures.",
+        isRest: false,
+        exercises: [
+          { name: "Dumbbell Bicep Curls (Free Weight Track)", target: "3 sets of 12 reps each arm", inputs: ["Weight (lbs)"], icon: "dumbbell", values: ["", ""], isDone: false, tempo: "Squeeze tight at the peak of rotation" },
+          { name: "Cable Tricep Pushdowns (Pulley Machine)", target: "3 sets of 12 reps (Using rope attachment)", inputs: ["Weight (lbs)"], icon: "arrow-down", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo: Full extension at base" },
+          { name: "Seated Dumbbell Shoulder Press", target: "3 sets of 10 reps (Isolated vertical push)", inputs: ["Weight (lbs)"], icon: "shield", values: ["", ""], isDone: false, tempo: "Control descent, protect the joints" },
+          { name: "Captain's Chair Leg Raises (Core Tower)", target: "3 sets to failure (Core engagement)", inputs: ["Reps hit"], icon: "activity", values: ["", ""], isDone: false, tempo: "Control the hang, no swinging legs" },
+          { name: "Light Cardio - Treadmill or Upright Bike (Briana)", target: "10 mins (Gentle warm/flush pace)", inputs: ["Mins", "Speed/Level"], icon: "heart-pulse", values: ["", ""], isDone: false, tempo: "Easy baseline pace to start off" },
+          { name: "Light Cardio - Seated Elliptical (Ryan)", target: "10 mins (Smooth low-impact stride)", inputs: ["Mins", "Level"], icon: "activity", values: ["", ""], isDone: false, tempo: "Low resistance joint activation" }
+        ]
+      },
       Thursday: {
         type: "Lifting Day",
-        title: "Thursday: Smith Machine Squat & Legs",
+        title: "Thursday: Smith Machine Squat, Legs & Cardio",
         subtitle: "Targeting quads, glutes, and calves on guided selectorized equipment.",
         isRest: false,
         exercises: [
           { name: "Smith Machine Squats", target: "3 sets of 10 reps (Feet slightly forward to protect knees)", inputs: ["Weight (lbs)"], icon: "dumbbell", values: ["", ""], isDone: false, tempo: "3-1-1 Tempo: 3s down, pause, push!" },
           { name: "Cable Glute Kickbacks", target: "3 sets of 12 reps each side (Using cable ankle strap)", inputs: ["Weight (lbs)"], icon: "sparkles", values: ["", ""], isDone: false, tempo: "1s Hold at top peak kick" },
-          { name: "Seated Calf Press Machine", target: "3 sets of 15 reps (Use leg press or calf machine plate)", inputs: ["Weight (lbs)"], icon: "footprints", values: ["", ""], isDone: false, tempo: "3s stretch, hold 1s at stretch" }
+          { name: "Seated Calf Press Machine", target: "3 sets of 15 reps (Use leg press or calf machine plate)", inputs: ["Weight (lbs)"], icon: "footprints", values: ["", ""], isDone: false, tempo: "3s stretch, hold 1s at stretch" },
+          { name: "Light Cardio - Treadmill or Upright Bike (Briana)", target: "10 mins (Gentle warm/flush pace)", inputs: ["Mins", "Speed/Level"], icon: "heart-pulse", values: ["", ""], isDone: false, tempo: "Easy baseline pace to start off" },
+          { name: "Light Cardio - Seated Elliptical (Ryan)", target: "10 mins (Smooth low-impact stride)", inputs: ["Mins", "Level"], icon: "activity", values: ["", ""], isDone: false, tempo: "Low resistance joint activation" }
         ]
       },
       Friday: {
@@ -308,7 +314,7 @@
     };
 
     // SYSTEM LOCAL STORAGE BACKUP STATE
-    let currentDay = "Monday";
+    let currentDay = "Tuesday";
     let activeTab = "workout";
     let activeProgram = JSON.parse(JSON.stringify(recommitWorkouts));
     
@@ -431,7 +437,7 @@
         headerTimeBadge.className = "text-[10px] text-accentPink font-black bg-pink-950/50 px-2 py-0.5 rounded-full border border-accentPink/40 animate-pulse";
       } else if (!workout.isRest) {
         timeSlotLabel.innerHTML = `<i data-lucide="clock" class="w-3.5 h-3.5 text-accentPurple"></i> Training Window`;
-        headerTimeBadge.innerText = "Lifting Session";
+        headerTimeBadge.innerText = "Lifting & Cardio";
         headerTimeBadge.className = "text-[10px] text-accentPurple font-semibold bg-purple-950/40 px-2 py-0.5 rounded-full border border-purple-900/30";
       } else {
         timeSlotLabel.innerHTML = `<i data-lucide="coffee" class="w-3.5 h-3.5 text-gray-500"></i> Absolute Downtime`;
@@ -676,3 +682,4 @@
   </script>
 </body>
 </html>
+
